@@ -1,4 +1,4 @@
-package com.andef.myplans
+package com.andef.myplans.presentation.ui
 
 import android.os.Bundle
 import android.view.View.GONE
@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.andef.myplans.R
 import com.applandeo.materialcalendarview.CalendarView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
