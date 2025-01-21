@@ -12,7 +12,7 @@
         android:id="@+id/recyclerViewPlansInPlans"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/cardViewPlans"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,16 +23,20 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="gone"
+        app:abbreviationsLabelsColor="@color/black"
         app:headerColor="#1565C0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:pagesColor="#FFFEFE"
-        app:todayLabelColor="#065CB6" />
+        app:pagesColor="#FDFDFD"
+        app:todayLabelColor="#1565C0" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewPlansInCalendar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/calendarView"
         app:layout_constraintBottom_toTopOf="@id/cardViewPlans"
         app:layout_constraintStart_toStartOf="parent"
