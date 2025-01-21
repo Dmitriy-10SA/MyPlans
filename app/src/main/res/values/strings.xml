@@ -4,4 +4,5 @@
     <string name="list_of_plans">Список планов</string>
     <string name="calendar">Календарь</string>
     <string name="add_new_plan">Добавить новый план</string>
+    <string name="importance_of_task">Важность задачи</string>
 </resources>
