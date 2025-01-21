@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.andef.myplans"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.andef.myplans"
@@ -38,6 +38,7 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
+    implementation("com.applandeo:material-calendar-view:1.9.2")
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
