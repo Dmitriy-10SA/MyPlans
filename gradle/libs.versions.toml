@@ -11,11 +11,13 @@ activity = "1.10.0"
 constraintlayout = "2.2.0"
 roomRuntime = "2.6.1"
 roomRxjava3 = "2.6.1"
+rxandroid = "2.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-room-rxjava2 = { module = "androidx.room:room-rxjava2", version.ref = "roomRuntime" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -24,6 +26,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "roomRxjava3" }
+rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxandroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

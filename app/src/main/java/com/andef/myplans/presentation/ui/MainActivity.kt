@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.andef.myplans.R
 import com.andef.myplans.presentation.adapter.PlanAdapter
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
 
+    private lateinit var itemTouchHelperForPlan: ItemTouchHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,10 +43,17 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        setItemTouchHelper()
+
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         initViews()
         observeOnViewModel()
+
+        viewModel.loadPlansInPlans(this)
+        itemTouchHelperForPlan.apply {
+            attachToRecyclerView(recyclerViewPlansInPlans)
+        }
     }
 
     private fun observeOnViewModel() {
@@ -74,9 +84,7 @@ class MainActivity : AppCompatActivity() {
         }
         cardViewCalendar = findViewById<CardView?>(R.id.cardViewCalendar).apply {
             setOnClickListener {
-                recyclerViewPlansInPlans.visibility = GONE
-                calendarView.visibility = VISIBLE
-                recyclerViewPlansInCalendar.visibility = VISIBLE
+                actionForCalendar()
             }
         }
 
@@ -87,9 +95,43 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setItemTouchHelper() {
+        itemTouchHelperForPlan = ItemTouchHelper(
+            object : ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            ) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(
+                    viewHolder: RecyclerView.ViewHolder,
+                    direction: Int
+                ) {
+                    val position = viewHolder.adapterPosition
+                    val plan = plansAdapter.plans[position]
+                    viewModel.removePlan(plan.id)
+                }
+            })
+    }
+
     private fun addNewPlan() {
         val intent = AddPlanActivity.newIntent(this)
         startActivity(intent)
+    }
+
+    private fun actionForCalendar() {
+        recyclerViewPlansInPlans.visibility = GONE
+        calendarView.visibility = VISIBLE
+        recyclerViewPlansInCalendar.visibility = VISIBLE
+        itemTouchHelperForPlan.apply {
+            attachToRecyclerView(recyclerViewPlansInCalendar)
+        }
     }
 
     private fun actionForPlans() {
@@ -97,5 +139,8 @@ class MainActivity : AppCompatActivity() {
         calendarView.visibility = GONE
         recyclerViewPlansInPlans.visibility = VISIBLE
         viewModel.loadPlansInPlans(this)
+        itemTouchHelperForPlan.apply {
+            attachToRecyclerView(recyclerViewPlansInPlans)
+        }
     }
 }
