@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var itemTouchHelperForPlan: ItemTouchHelper
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -73,6 +74,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun initViews() {
         plansAdapter = PlanAdapter()
 
@@ -158,7 +160,6 @@ class MainActivity : AppCompatActivity() {
         val month = calendar.get(Calendar.MONTH) + 1
         val year = calendar.get(Calendar.YEAR)
         viewModel.loadPlansByDate(this, "$day/$month/$year")
-        Log.d("AAA","$day/$month/$year")
     }
 
     private fun actionForPlans() {

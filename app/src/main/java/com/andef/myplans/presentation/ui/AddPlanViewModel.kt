@@ -50,6 +50,7 @@ class AddPlanViewModel(application: Application) : AndroidViewModel(application)
         compositeDisposable.add(disposable)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onSelect(calendar: List<Calendar>) {
         val selectedDate = calendar[0]
         val day = selectedDate.get(Calendar.DAY_OF_MONTH)

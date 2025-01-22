@@ -91,6 +91,7 @@ class AddPlanActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun savePlan() {
         val title = editTextPlanTitle.text.toString().trim()
         val importance = getImportance()
