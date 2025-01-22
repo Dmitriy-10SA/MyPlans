@@ -36,6 +36,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.room.rxjava3)
 
     implementation(libs.androidx.core.ktx)
     implementation("com.applandeo:material-calendar-view:1.9.2")

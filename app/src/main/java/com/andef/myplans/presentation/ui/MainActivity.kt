@@ -10,13 +10,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.andef.myplans.R
-import com.andef.myplans.domain.entities.Importance
-import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.presentation.adapter.PlanAdapter
 import com.applandeo.materialcalendarview.CalendarView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.util.ArrayList
-import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var plansInPlansAdapter: PlanAdapter
