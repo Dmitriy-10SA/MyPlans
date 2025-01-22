@@ -23,6 +23,10 @@ class PlanAdapter: Adapter<PlanAdapter.PlanViewHolder>() {
             notifyDataSetChanged()
         }
 
+    private var onPlanClickListener: OnPlanClickListener? = null
+    fun setOnPlanClickListener(onPlanClickListener: OnPlanClickListener) {
+        this.onPlanClickListener = onPlanClickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
@@ -49,13 +53,20 @@ class PlanAdapter: Adapter<PlanAdapter.PlanViewHolder>() {
         }
         holder.imageViewImportance.background = background
         holder.textViewPlanText.text = plan.title
+        holder.textViewPlanText.setOnClickListener {
+            if (onPlanClickListener != null) {
+                onPlanClickListener!!.onClick(plan)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
         return _plans.size
     }
 
-    interface OnPlan
+    interface OnPlanClickListener {
+        fun onClick(plan: Plan)
+    }
 
     class PlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewPlanText= itemView.findViewById<TextView>(R.id.textViewPlanText)

@@ -26,7 +26,8 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var plansAdapter: PlanAdapter
+    private lateinit var plansInPlanAdapter: PlanAdapter
+    private lateinit var plansInCalenderAdapter: PlanAdapter
 
     private lateinit var recyclerViewPlansInPlans: RecyclerView
     private lateinit var recyclerViewPlansInCalendar: RecyclerView
@@ -40,7 +41,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
 
-    private lateinit var itemTouchHelperForPlan: ItemTouchHelper
+    private lateinit var itemTouchHelperForPlanInPlans: ItemTouchHelper
+    private lateinit var itemTouchHelperForPlanInCalendar: ItemTouchHelper
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,40 +55,101 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        setItemTouchHelper()
-
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-
         initViews()
-        observeOnViewModel()
+        initViewModel()
+
+        setItemTouchHelperPlanInPlans()
+        setItemTouchHelperPlanInCalendar()
+
+        initBeforeStart()
+    }
+
+    private fun initBeforeStart() {
+        calendarView.setOnCalendarDayClickListener(object : OnCalendarDayClickListener {
+            override fun onClick(calendarDay: CalendarDay) {
+                loadPlansByDate(calendarDay.calendar)
+            }
+        })
 
         viewModel.loadPlansInPlans(this)
-        itemTouchHelperForPlan.apply {
+    }
+
+    private fun setItemTouchHelperPlanInCalendar() {
+        itemTouchHelperForPlanInCalendar = ItemTouchHelper(
+            object : ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            ) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(
+                    viewHolder: RecyclerView.ViewHolder,
+                    direction: Int
+                ) {
+                    val position = viewHolder.adapterPosition
+                    val plan = plansInCalenderAdapter.plans[position]
+                    viewModel.removePlan(plan.id)
+                }
+            })
+        itemTouchHelperForPlanInCalendar.apply {
+            attachToRecyclerView(recyclerViewPlansInCalendar)
+        }
+    }
+
+    private fun setItemTouchHelperPlanInPlans() {
+        itemTouchHelperForPlanInPlans = ItemTouchHelper(
+            object : ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            ) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(
+                    viewHolder: RecyclerView.ViewHolder,
+                    direction: Int
+                ) {
+                    val position = viewHolder.adapterPosition
+                    val plan = plansInPlanAdapter.plans[position]
+                    viewModel.removePlan(plan.id)
+                }
+            })
+        itemTouchHelperForPlanInPlans.apply {
             attachToRecyclerView(recyclerViewPlansInPlans)
         }
     }
 
-    private fun observeOnViewModel() {
-
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.plansInPlans.observe(this) {
-            plansAdapter.plans = it
+            plansInPlanAdapter.plans = it
         }
         viewModel.plansInCalendar.observe(this) {
-            plansAdapter.plans = it
+            plansInCalenderAdapter.plans = it
         }
     }
 
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initViews() {
-        plansAdapter = PlanAdapter()
+        plansInPlanAdapter = PlanAdapter()
+        plansInCalenderAdapter = PlanAdapter()
 
         recyclerViewPlansInPlans = findViewById<RecyclerView?>(R.id.recyclerViewPlansInPlans).apply {
-            adapter = plansAdapter
+            adapter = plansInPlanAdapter
         }
         recyclerViewPlansInCalendar = findViewById<RecyclerView?>(R.id.recyclerViewPlansInCalendar).apply {
-            adapter = plansAdapter
+            adapter = plansInCalenderAdapter
         }
 
         calendarView = findViewById(R.id.calendarView)
@@ -109,31 +172,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setItemTouchHelper() {
-        itemTouchHelperForPlan = ItemTouchHelper(
-            object : ItemTouchHelper.SimpleCallback(
-                0,
-                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-            ) {
-                override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    target: RecyclerView.ViewHolder
-                ): Boolean {
-                    return false
-                }
-
-                override fun onSwiped(
-                    viewHolder: RecyclerView.ViewHolder,
-                    direction: Int
-                ) {
-                    val position = viewHolder.adapterPosition
-                    val plan = plansAdapter.plans[position]
-                    viewModel.removePlan(plan.id)
-                }
-            })
-    }
-
     private fun addNewPlan() {
         val intent = AddPlanActivity.newIntent(this)
         startActivity(intent)
@@ -144,14 +182,6 @@ class MainActivity : AppCompatActivity() {
         recyclerViewPlansInPlans.visibility = GONE
         calendarView.visibility = VISIBLE
         recyclerViewPlansInCalendar.visibility = VISIBLE
-        itemTouchHelperForPlan.apply {
-            attachToRecyclerView(recyclerViewPlansInCalendar)
-        }
-        calendarView.setOnCalendarDayClickListener(object : OnCalendarDayClickListener {
-            override fun onClick(calendarDay: CalendarDay) {
-                loadPlansByDate(calendarDay.calendar)
-            }
-        })
         val curDate = LocalDate.now()
         viewModel.loadPlansByDate(
             this,
@@ -171,11 +201,5 @@ class MainActivity : AppCompatActivity() {
         calendarView.visibility = GONE
         recyclerViewPlansInPlans.visibility = VISIBLE
         viewModel.loadPlansInPlans(this)
-        itemTouchHelperForPlan.apply {
-            attachToRecyclerView(recyclerViewPlansInPlans)
-        }
-        calendarView.setOnCalendarDayClickListener(object : OnCalendarDayClickListener {
-            override fun onClick(calendarDay: CalendarDay) {}
-        })
     }
 }

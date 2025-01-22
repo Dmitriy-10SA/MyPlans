@@ -19,6 +19,7 @@ import com.andef.myplans.R
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.domain.usecases.AddPlan
+import com.applandeo.materialcalendarview.CalendarDay
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.builders.DatePickerBuilder
 import com.applandeo.materialcalendarview.listeners.OnSelectDateListener
@@ -39,6 +40,7 @@ class AddPlanActivity : AppCompatActivity() {
 
     private lateinit var viewModel: AddPlanViewModel
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -54,6 +56,7 @@ class AddPlanActivity : AppCompatActivity() {
         initViews()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun initViews() {
         editTextPlanTitle = findViewById(R.id.editTextPlanTitleInAdd)
 

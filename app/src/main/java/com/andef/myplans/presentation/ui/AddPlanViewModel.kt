@@ -9,13 +9,16 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.andef.myplans.R
 import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.domain.usecases.AddPlan
+import com.applandeo.materialcalendarview.CalendarDay
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.builders.DatePickerBuilder
 import com.applandeo.materialcalendarview.listeners.OnSelectDateListener
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.time.LocalDate
@@ -46,6 +49,7 @@ class AddPlanViewModel(application: Application) : AndroidViewModel(application)
     fun savePlan(plan: Plan) {
         val disposable = AddPlan.execute(getApplication(), plan)
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
         compositeDisposable.add(disposable)
     }

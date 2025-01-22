@@ -26,6 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="gone"
+        app:type="one_day_picker"
+        app:selectionColor="#1565C0"
         app:abbreviationsLabelsColor="@color/black"
         app:headerColor="#1565C0"
         app:headerLabelColor="@color/white"
