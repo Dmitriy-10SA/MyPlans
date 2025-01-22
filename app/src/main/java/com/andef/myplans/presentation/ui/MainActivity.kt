@@ -80,7 +80,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        floatingActionButtonAddPlan = findViewById(R.id.floatingActionButtonAddPlan)
+        floatingActionButtonAddPlan = findViewById<FloatingActionButton?>(R.id.floatingActionButtonAddPlan).apply {
+            setOnClickListener {
+                addNewPlan()
+            }
+        }
+    }
+
+    private fun addNewPlan() {
+
     }
 
     private fun actionForPlans() {
