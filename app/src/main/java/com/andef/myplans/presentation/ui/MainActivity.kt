@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.andef.myplans.R
+import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.presentation.adapter.PlanAdapter
 import com.applandeo.materialcalendarview.CalendarDay
 import com.applandeo.materialcalendarview.CalendarView
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeOnViewModel() {
+
         viewModel.plansInPlans.observe(this) {
             plansAdapter.plans = it
         }
@@ -73,6 +75,8 @@ class MainActivity : AppCompatActivity() {
             plansAdapter.plans = it
         }
     }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initViews() {
