@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.andef.myplans.R
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
+import org.w3c.dom.Text
 
 class PlanAdapter: Adapter<PlanAdapter.PlanViewHolder>() {
     private var _plans = ArrayList<Plan>()
@@ -54,7 +55,7 @@ class PlanAdapter: Adapter<PlanAdapter.PlanViewHolder>() {
     }
 
     class PlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textViewPlanText: TextView = itemView.findViewById(R.id.textViewPlanText)
-        val imageViewImportance: ImageView = itemView.findViewById(R.id.imageViewImportance)
+        val textViewPlanText= itemView.findViewById<TextView>(R.id.textViewPlanText)
+        val imageViewImportance= itemView.findViewById<ImageView>(R.id.imageViewImportance)
     }
 }

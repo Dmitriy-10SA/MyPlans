@@ -19,8 +19,8 @@ interface PlanDao {
     @Query("SELECT * FROM plans")
     fun getPlans(): LiveData<List<Plan>>
 
-    @Query("SELECT * FROM plans WHERE id = :id")
-    fun getPlansById(id: Int): LiveData<List<Plan>>
+    @Query("SELECT * FROM plans WHERE date = :date")
+    fun getPlansByDate(date: String): LiveData<List<Plan>>
 
     @Query("UPDATE plans SET title = :title, date = :date, importance = :importance WHERE id = :id")
     fun changePlanById(id: Int, title: String, date: String, importance: Importance): Completable

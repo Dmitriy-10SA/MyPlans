@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.andef.myplans.R
 import com.andef.myplans.presentation.adapter.PlanAdapter
@@ -15,8 +16,7 @@ import com.applandeo.materialcalendarview.CalendarView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var plansInPlansAdapter: PlanAdapter
-    private lateinit var plansInCalendarAdapter: PlanAdapter
+    private lateinit var plansAdapter: PlanAdapter
 
     private lateinit var recyclerViewPlansInPlans: RecyclerView
     private lateinit var recyclerViewPlansInCalendar: RecyclerView
@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var floatingActionButtonAddPlan: FloatingActionButton
 
+    private lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -38,27 +40,36 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
         initViews()
+        observeOnViewModel()
+    }
+
+    private fun observeOnViewModel() {
+        viewModel.plansInPlans.observe(this) {
+            plansAdapter.plans = it
+        }
+        viewModel.plansInCalendar.observe(this) {
+            plansAdapter.plans = it
+        }
     }
 
     private fun initViews() {
-        plansInPlansAdapter = PlanAdapter()
-        plansInCalendarAdapter = PlanAdapter()
+        plansAdapter = PlanAdapter()
 
         recyclerViewPlansInPlans = findViewById<RecyclerView?>(R.id.recyclerViewPlansInPlans).apply {
-            adapter = plansInPlansAdapter
+            adapter = plansAdapter
         }
         recyclerViewPlansInCalendar = findViewById<RecyclerView?>(R.id.recyclerViewPlansInCalendar).apply {
-            adapter = plansInCalendarAdapter
+            adapter = plansAdapter
         }
 
         calendarView = findViewById(R.id.calendarView)
 
         cardViewPlans = findViewById<CardView?>(R.id.cardViewPlans).apply {
             setOnClickListener {
-                recyclerViewPlansInCalendar.visibility = GONE
-                calendarView.visibility = GONE
-                recyclerViewPlansInPlans.visibility = VISIBLE
+                actionForPlans()
             }
         }
         cardViewCalendar = findViewById<CardView?>(R.id.cardViewCalendar).apply {
@@ -70,5 +81,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         floatingActionButtonAddPlan = findViewById(R.id.floatingActionButtonAddPlan)
+    }
+
+    private fun actionForPlans() {
+        recyclerViewPlansInCalendar.visibility = GONE
+        calendarView.visibility = GONE
+        recyclerViewPlansInPlans.visibility = VISIBLE
+        viewModel.loadPlansInPlans(this)
     }
 }

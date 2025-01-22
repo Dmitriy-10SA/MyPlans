@@ -7,8 +7,6 @@ import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.domain.repository.PlanRepository
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Scheduler
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 class PlanRepositoryImpl(application: Application): PlanRepository {
     companion object {
@@ -36,8 +34,8 @@ class PlanRepositoryImpl(application: Application): PlanRepository {
         return planDataBase.planDao.getPlans()
     }
 
-    override fun getPlansById(id: Int): LiveData<List<Plan>> {
-        return planDataBase.planDao.getPlansById(id)
+    override fun getPlansByDate(date: String): LiveData<List<Plan>> {
+        return planDataBase.planDao.getPlansByDate(date)
     }
 
     override fun changePlanById(

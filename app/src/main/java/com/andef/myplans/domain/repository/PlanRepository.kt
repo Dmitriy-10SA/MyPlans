@@ -9,6 +9,6 @@ interface PlanRepository {
     fun add(plan: Plan): Completable
     fun remove(id: Int): Completable
     fun getPlans(): LiveData<List<Plan>>
-    fun getPlansById(id: Int): LiveData<List<Plan>>
+    fun getPlansByDate(date: String): LiveData<List<Plan>>
     fun changePlanById(id: Int, title: String, date: String, importance: Importance): Completable
 }

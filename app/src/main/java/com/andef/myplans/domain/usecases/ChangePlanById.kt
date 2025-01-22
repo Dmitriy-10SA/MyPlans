@@ -3,10 +3,9 @@ package com.andef.myplans.domain.usecases
 import android.app.Application
 import com.andef.myplans.data.repository.PlanRepositoryImpl
 import com.andef.myplans.domain.entities.Importance
-import com.andef.myplans.domain.entities.Plan
 import io.reactivex.rxjava3.core.Completable
 
-object ChangePlansById {
+object ChangePlanById {
     fun execute(
         application: Application,
         id: Int,
