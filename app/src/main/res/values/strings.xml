@@ -5,4 +5,11 @@
     <string name="calendar">Календарь</string>
     <string name="add_new_plan">Добавить новый план</string>
     <string name="importance_of_task">Важность задачи</string>
+    <string name="input_your_plan">Введите ваш план</string>
+    <string name="low">Низкий</string>
+    <string name="medium">Средний</string>
+    <string name="high">Высокий</string>
+    <string name="save">Сохранить</string>
+    <string name="main_screen">Главный экран</string>
+    <string name="fill_in_the_fields">Заполните все поля!</string>
 </resources>

@@ -6,7 +6,7 @@ import com.andef.myplans.data.datasource.PlanDataBase
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.domain.repository.PlanRepository
-import io.reactivex.rxjava3.core.Completable
+import io.reactivex.Completable
 
 class PlanRepositoryImpl(application: Application): PlanRepository {
     companion object {

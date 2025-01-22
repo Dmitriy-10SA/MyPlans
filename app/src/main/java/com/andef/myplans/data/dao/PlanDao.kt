@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
-import io.reactivex.rxjava3.core.Completable
+import io.reactivex.Completable
 
 @Dao
 interface PlanDao {

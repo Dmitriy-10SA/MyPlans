@@ -3,7 +3,7 @@ package com.andef.myplans.domain.repository
 import androidx.lifecycle.LiveData
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
-import io.reactivex.rxjava3.core.Completable
+import io.reactivex.Completable
 
 interface PlanRepository {
     fun add(plan: Plan): Completable

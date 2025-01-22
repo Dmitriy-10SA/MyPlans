@@ -20,6 +20,7 @@ class PlanAdapter: Adapter<PlanAdapter.PlanViewHolder>() {
         set(value) {
             _plans = value as ArrayList<Plan>
             field = value.toList()
+            notifyDataSetChanged()
         }
 
 
@@ -53,6 +54,8 @@ class PlanAdapter: Adapter<PlanAdapter.PlanViewHolder>() {
     override fun getItemCount(): Int {
         return _plans.size
     }
+
+    interface OnPlan
 
     class PlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewPlanText= itemView.findViewById<TextView>(R.id.textViewPlanText)
