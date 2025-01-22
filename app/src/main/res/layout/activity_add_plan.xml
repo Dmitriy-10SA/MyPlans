@@ -11,10 +11,11 @@
     tools:context=".presentation.ui.AddPlanActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="12dp"
             android:autofillHints="no"
             android:background="@drawable/frame"
             android:hint="@string/input_your_plan"
@@ -41,7 +42,7 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -93,7 +94,7 @@
             android:id="@+id/floatingActionButtonCalendarInAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:backgroundTint="@color/white"
             android:contentDescription="@string/calendar"
             app:srcCompat="@drawable/calendar"
@@ -103,7 +104,7 @@
             android:id="@+id/buttonSaveInAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:backgroundTint="#1565C0"
             android:padding="8dp"
             android:paddingStart="32dp"
@@ -112,6 +113,17 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             app:cornerRadius="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/del_plan"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

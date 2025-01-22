@@ -12,4 +12,6 @@
     <string name="save">Сохранить</string>
     <string name="main_screen">Главный экран</string>
     <string name="fill_in_the_fields">Заполните все поля!</string>
+    <string name="wo_plans">Планов нет! Выберите день!</string>
+    <string name="del_plan">План можно будет удалить свайпом влево или вправо</string>
 </resources>

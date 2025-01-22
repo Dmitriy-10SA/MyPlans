@@ -41,7 +41,7 @@ class AddPlanViewModel(application: Application) : AndroidViewModel(application)
             .selectionLabelColor(R.color.white)
             .daysLabelsColor(R.color.black)
             .dialogButtonsColor(R.color.black)
-            .todayColor(Color.BLACK)
+            .todayLabelColor(R.color.my_blue)
             .build()
             .show()
     }

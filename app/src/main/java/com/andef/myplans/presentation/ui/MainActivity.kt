@@ -1,10 +1,12 @@
 package com.andef.myplans.presentation.ui
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerViewPlansInPlans: RecyclerView
     private lateinit var recyclerViewPlansInCalendar: RecyclerView
 
+    private lateinit var textViewDate: TextView
+
     private lateinit var calendarView: CalendarView
 
     private lateinit var cardViewPlans: CardView
@@ -47,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -88,6 +92,7 @@ class MainActivity : AppCompatActivity() {
                     return false
                 }
 
+                @RequiresApi(Build.VERSION_CODES.O)
                 override fun onSwiped(
                     viewHolder: RecyclerView.ViewHolder,
                     direction: Int
@@ -130,12 +135,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initViewModel() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.plansInPlans.observe(this) {
             plansInPlanAdapter.plans = it
         }
         viewModel.plansInCalendar.observe(this) {
+            if (it.isNotEmpty()) {
+                val date = it[0].date.split("/")
+                val day = date[0].toInt()
+                val month = date[1].toInt()
+                val year = date[2].toInt()
+                textViewDate.text = "$day/$month/$year"
+            } else {
+                textViewDate.text = getString(R.string.wo_plans)
+            }
             plansInCalenderAdapter.plans = it
         }
     }
@@ -153,6 +168,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         calendarView = findViewById(R.id.calendarView)
+
+        textViewDate = findViewById(R.id.textViewDate)
 
         cardViewPlans = findViewById<CardView?>(R.id.cardViewPlans).apply {
             setOnClickListener {
@@ -181,14 +198,11 @@ class MainActivity : AppCompatActivity() {
     private fun actionForCalendar() {
         recyclerViewPlansInPlans.visibility = GONE
         calendarView.visibility = VISIBLE
+        textViewDate.visibility = VISIBLE
         recyclerViewPlansInCalendar.visibility = VISIBLE
-        val curDate = LocalDate.now()
-        viewModel.loadPlansByDate(
-            this,
-            "${curDate.dayOfMonth}/${curDate.month.value}/${curDate.year}"
-        )
     }
 
+    @SuppressLint("SetTextI18n")
     private fun loadPlansByDate(calendar: Calendar) {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val month = calendar.get(Calendar.MONTH) + 1
@@ -199,6 +213,7 @@ class MainActivity : AppCompatActivity() {
     private fun actionForPlans() {
         recyclerViewPlansInCalendar.visibility = GONE
         calendarView.visibility = GONE
+        textViewDate.visibility = GONE
         recyclerViewPlansInPlans.visibility = VISIBLE
         viewModel.loadPlansInPlans(this)
     }
