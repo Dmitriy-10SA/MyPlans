@@ -18,12 +18,14 @@ import com.applandeo.materialcalendarview.builders.DatePickerBuilder
 import com.applandeo.materialcalendarview.listeners.OnSelectDateListener
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.time.LocalDate
 import java.util.Calendar
 
 class AddPlanViewModel(application: Application) : AndroidViewModel(application), OnSelectDateListener {
     private val compositeDisposable = CompositeDisposable()
 
-    var date: String = ""
+    @RequiresApi(Build.VERSION_CODES.O)
+    var date: String = "${LocalDate.now().dayOfMonth}/${LocalDate.now().month.value}/${LocalDate.now().year}"
         private set
 
     fun openDatePicker(context: Context) {

@@ -1,9 +1,12 @@
 package com.andef.myplans.presentation.ui
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
@@ -13,8 +16,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.andef.myplans.R
 import com.andef.myplans.presentation.adapter.PlanAdapter
+import com.applandeo.materialcalendarview.CalendarDay
 import com.applandeo.materialcalendarview.CalendarView
+import com.applandeo.materialcalendarview.listeners.OnCalendarDayClickListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var plansAdapter: PlanAdapter
@@ -125,6 +133,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun actionForCalendar() {
         recyclerViewPlansInPlans.visibility = GONE
         calendarView.visibility = VISIBLE
@@ -132,6 +141,24 @@ class MainActivity : AppCompatActivity() {
         itemTouchHelperForPlan.apply {
             attachToRecyclerView(recyclerViewPlansInCalendar)
         }
+        calendarView.setOnCalendarDayClickListener(object : OnCalendarDayClickListener {
+            override fun onClick(calendarDay: CalendarDay) {
+                loadPlansByDate(calendarDay.calendar)
+            }
+        })
+        val curDate = LocalDate.now()
+        viewModel.loadPlansByDate(
+            this,
+            "${curDate.dayOfMonth}/${curDate.month.value}/${curDate.year}"
+        )
+    }
+
+    private fun loadPlansByDate(calendar: Calendar) {
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val year = calendar.get(Calendar.YEAR)
+        viewModel.loadPlansByDate(this, "$day/$month/$year")
+        Log.d("AAA","$day/$month/$year")
     }
 
     private fun actionForPlans() {
@@ -142,5 +169,8 @@ class MainActivity : AppCompatActivity() {
         itemTouchHelperForPlan.apply {
             attachToRecyclerView(recyclerViewPlansInPlans)
         }
+        calendarView.setOnCalendarDayClickListener(object : OnCalendarDayClickListener {
+            override fun onClick(calendarDay: CalendarDay) {}
+        })
     }
 }

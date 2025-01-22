@@ -3,12 +3,14 @@ package com.andef.myplans.presentation.ui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -105,6 +107,7 @@ class AddPlanActivity : AppCompatActivity() {
         finish()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun getDate(): String {
         return viewModel.date
     }
