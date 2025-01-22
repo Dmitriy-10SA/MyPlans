@@ -88,7 +88,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addNewPlan() {
-
+        val intent = AddPlanActivity.newIntent(this)
+        startActivity(intent)
     }
 
     private fun actionForPlans() {

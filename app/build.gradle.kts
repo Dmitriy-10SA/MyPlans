@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation(libs.androidx.constraintlayout)
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-rxjava3:2.6.1")
     implementation("com.applandeo:material-calendar-view:1.9.2")
