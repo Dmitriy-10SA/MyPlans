@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="26sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/imageViewImportance"
             app:layout_constraintHorizontal_bias="1.0"
