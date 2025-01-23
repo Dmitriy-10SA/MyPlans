@@ -1,15 +1,13 @@
-package com.andef.myplans.presentation.ui
+package com.andef.myplans.presentation.ui.activity
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -18,13 +16,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.andef.myplans.R
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
-import com.andef.myplans.domain.usecases.AddPlan
-import com.applandeo.materialcalendarview.CalendarDay
-import com.applandeo.materialcalendarview.CalendarView
-import com.applandeo.materialcalendarview.builders.DatePickerBuilder
-import com.applandeo.materialcalendarview.listeners.OnSelectDateListener
+import com.andef.myplans.presentation.ui.viewmodel.AddPlanViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.util.Calendar
 
 class AddPlanActivity : AppCompatActivity() {
     private lateinit var editTextPlanTitle: EditText
@@ -98,10 +91,18 @@ class AddPlanActivity : AppCompatActivity() {
     private fun savePlan() {
         val title = editTextPlanTitle.text.toString().trim()
         val importance = getImportance()
-        if (title.isEmpty() || importance == null) {
+        if (title.isEmpty()) {
             Toast.makeText(
                 this,
-                getString(R.string.fill_in_the_fields),
+                getString(R.string.fill_in_the_text),
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        if (importance == null) {
+            Toast.makeText(
+                this,
+                getString(R.string.fill_in_the_importance),
                 Toast.LENGTH_SHORT
             ).show()
             return

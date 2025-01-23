@@ -1,13 +1,11 @@
-package com.andef.myplans.presentation.ui
+package com.andef.myplans.presentation.ui.activity
 
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -17,14 +15,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.andef.myplans.R
+import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.presentation.adapter.PlanAdapter
+import com.andef.myplans.presentation.ui.viewmodel.MainViewModel
 import com.applandeo.materialcalendarview.CalendarDay
 import com.applandeo.materialcalendarview.CalendarView
+import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarDayClickListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
@@ -64,8 +63,41 @@ class MainActivity : AppCompatActivity() {
 
         setItemTouchHelperPlanInPlans()
         setItemTouchHelperPlanInCalendar()
+        initPlanTouch()
 
         initBeforeStart()
+    }
+
+    private fun initPlanTouch() {
+        plansInPlanAdapter.setOnPlanClickListener(object : PlanAdapter.OnPlanClickListener {
+            override fun onClick(plan: Plan) {
+                changeScreen(plan)
+            }
+        })
+        plansInCalenderAdapter.setOnPlanClickListener(object : PlanAdapter.OnPlanClickListener {
+            override fun onClick(plan: Plan) {
+                changeScreen(plan)
+            }
+        })
+    }
+
+    private fun getImportanceInt(importance: Importance): Int {
+        return when (importance) {
+            Importance.LOW -> 3
+            Importance.MEDIUM -> 2
+            else -> 1
+        }
+    }
+
+    private fun changeScreen(plan: Plan) {
+        val intent = ChangePlanActivity.newIntent(
+            this,
+            plan.id,
+            plan.title,
+            plan.date,
+            getImportanceInt(plan.importance)
+        )
+        startActivity(intent)
     }
 
     private fun initBeforeStart() {
@@ -135,11 +167,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showEventDays(plans: List<Plan>) {
+        val calendarDays = ArrayList<EventDay>()
+        plans.forEach {
+            val calendar = Calendar.getInstance()
+            val date = it.date.split("/")
+            calendar.set(date[2].toInt(), date[1].toInt() - 1, date[0].toInt())
+            calendarDays.add(EventDay(calendar, R.drawable.calendarplans))
+        }
+        calendarView.setEvents(calendarDays)
+    }
+
     @SuppressLint("SetTextI18n")
     private fun initViewModel() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.plansInPlans.observe(this) {
             plansInPlanAdapter.plans = it
+            showEventDays(it)
         }
         viewModel.plansInCalendar.observe(this) {
             if (it.isNotEmpty()) {

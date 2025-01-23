@@ -1,7 +1,6 @@
-package com.andef.myplans.presentation.ui
+package com.andef.myplans.presentation.ui.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData

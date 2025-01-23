@@ -6,9 +6,7 @@
     android:background="@drawable/app_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    tools:context=".presentation.ui.activity.AddPlanActivity">
+    tools:context=".presentation.ui.activity.ChangePlanActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -22,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/editTextPlanTitleInAdd"
+            android:id="@+id/editTextPlanTitleInChange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -47,7 +45,7 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radioButtonLowInAdd"
+                android:id="@+id/radioButtonLowInChange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
@@ -61,7 +59,7 @@
                 app:tint="@color/black" />
 
             <RadioButton
-                android:id="@+id/radioButtonMediumInAdd"
+                android:id="@+id/radioButtonMediumInChange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -76,7 +74,7 @@
                 app:tint="@color/black" />
 
             <RadioButton
-                android:id="@+id/radioButtonHighInAdd"
+                android:id="@+id/radioButtonHighInChange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -91,7 +89,7 @@
         </RadioGroup>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButtonCalendarInAdd"
+            android:id="@+id/floatingActionButtonCalendarInChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -101,7 +99,7 @@
             app:tint="@color/black" />
 
         <Button
-            android:id="@+id/buttonSaveInAdd"
+            android:id="@+id/buttonSaveInChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -115,9 +113,10 @@
             app:cornerRadius="10dp" />
 
         <TextView
+            android:id="@+id/textViewLastDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/del_plan"
+            android:text="@string/last_date"
             android:layout_marginTop="8dp"
             android:textColor="@color/black"
             android:textSize="14sp"
@@ -127,7 +126,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButtonHomeInAdd"
+        android:id="@+id/floatingActionButtonHomeInChange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/back_button"

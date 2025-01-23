@@ -11,7 +11,9 @@
     <string name="high">Высокий</string>
     <string name="save">Сохранить</string>
     <string name="main_screen">Главный экран</string>
-    <string name="fill_in_the_fields">Заполните все поля!</string>
+    <string name="fill_in_the_importance">Выберите важность!</string>
+    <string name="fill_in_the_text">Напишите план!</string>
     <string name="wo_plans">Планов нет! Выберите день!</string>
-    <string name="del_plan">План можно будет удалить свайпом влево или вправо</string>
+    <string name="del_plan">План можно будет удалить свайпом влево или вправо. Изменить план можно нажав на него.</string>
+    <string name="last_date">"Прошлая дата: "</string>
 </resources>

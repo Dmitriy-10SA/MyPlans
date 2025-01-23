@@ -1,20 +1,13 @@
-package com.andef.myplans.presentation.ui
+package com.andef.myplans.presentation.ui.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.andef.myplans.R
 import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.domain.usecases.AddPlan
-import com.applandeo.materialcalendarview.CalendarDay
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.builders.DatePickerBuilder
 import com.applandeo.materialcalendarview.listeners.OnSelectDateListener
