@@ -3,6 +3,7 @@ package com.andef.myplans.presentation.ui.activity
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Im
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
@@ -25,6 +26,7 @@ import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarDayClickListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.Calendar
+import java.util.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var plansInPlanAdapter: PlanAdapter
