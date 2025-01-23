@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyPlans</string>
+    <string name="app_name">Мои планы</string>
     <string name="plans">Планы</string>
     <string name="list_of_plans">Список планов</string>
     <string name="calendar">Календарь</string>
