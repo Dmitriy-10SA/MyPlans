@@ -3,9 +3,9 @@ package com.andef.myplans.presentation.ui.activity
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.animation.Animation
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +26,6 @@ import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarDayClickListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.Calendar
-import java.util.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var plansInPlanAdapter: PlanAdapter
@@ -219,11 +218,13 @@ class MainActivity : AppCompatActivity() {
 
         cardViewPlans = findViewById<CardView?>(R.id.cardViewPlans).apply {
             setOnClickListener {
+                touchCardViewPlansAnim()
                 actionForPlans()
             }
         }
         cardViewCalendar = findViewById<CardView?>(R.id.cardViewCalendar).apply {
             setOnClickListener {
+                touchCardViewCalendarAnim()
                 actionForCalendar()
             }
         }
@@ -235,9 +236,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun touchCardViewCalendarAnim() {
+        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_cardview)
+        cardViewCalendar.startAnimation(animation)
+    }
+
+    private fun touchCardViewPlansAnim() {
+        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_cardview)
+        cardViewPlans.startAnimation(animation)
+    }
+
     private fun addNewPlan() {
         val intent = AddPlanActivity.newIntent(this)
-        startActivity(intent)
+        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_button)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationRepeat(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                startActivity(intent)
+            }
+        })
+        floatingActionButtonAddPlan.startAnimation(animation)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

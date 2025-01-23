@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.animation.Animation
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
@@ -40,7 +41,7 @@ class ChangePlanActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         setContentView(R.layout.activity_change_plan)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -83,7 +84,7 @@ class ChangePlanActivity : AppCompatActivity() {
         }
         floatingActionButtonHome = findViewById<FloatingActionButton?>(R.id.floatingActionButtonHomeInChange).apply {
             setOnClickListener {
-                finish()
+                mainScreen()
             }
         }
 
@@ -92,6 +93,19 @@ class ChangePlanActivity : AppCompatActivity() {
                 changePlan()
             }
         }
+    }
+
+    private fun mainScreen() {
+        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationRepeat(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                finish()
+            }
+        })
+        floatingActionButtonHome.startAnimation(animation)
     }
 
     private fun getImportance(): Importance? {
@@ -108,30 +122,52 @@ class ChangePlanActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun changePlan() {
-        val title = editTextPlanTitle.text.toString().trim()
-        val importance = getImportance()
-        if (title.isEmpty()) {
-            Toast.makeText(
-                this,
-                getString(R.string.fill_in_the_text),
-                Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-        if (importance == null) {
-            Toast.makeText(
-                this,
-                getString(R.string.fill_in_the_importance),
-                Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-        val plan = Plan(intent.getIntExtra(EXTRA_ID, -1), title, getDate(), importance)
-        viewModel.changePlan(plan)
-        finish()
+        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationRepeat(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                val title = editTextPlanTitle.text.toString().trim()
+                val importance = getImportance()
+                if (title.isEmpty()) {
+                    getToast(getString(R.string.fill_in_the_text))
+                    return
+                }
+                if (importance == null) {
+                    getToast(getString(R.string.fill_in_the_importance))
+                    return
+                }
+                val plan = Plan(intent.getIntExtra(EXTRA_ID, -1), title, getDate(), importance)
+                viewModel.changePlan(plan)
+                finish()
+            }
+        })
+        buttonSave.startAnimation(animation)
+    }
+
+    private fun getToast(stringOfToast: String) {
+        Toast.makeText(
+            this,
+            stringOfToast,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun openCalendar() {
+        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_button)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationRepeat(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                openCalendarPicker()
+            }
+        })
+        floatingActionButtonCalendar.startAnimation(animation)
+    }
+
+    private fun openCalendarPicker() {
         viewModel.openDatePicker(this)
     }
 
