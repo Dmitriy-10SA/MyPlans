@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.animation.Animation
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
@@ -64,7 +65,7 @@ class AddPlanActivity : AppCompatActivity() {
         }
         floatingActionButtonHomeInAdd = findViewById<FloatingActionButton?>(R.id.floatingActionButtonHomeInAdd).apply {
             setOnClickListener {
-               finish()
+               mainScreen()
            }
         }
 
@@ -73,6 +74,19 @@ class AddPlanActivity : AppCompatActivity() {
                 savePlan()
             }
         }
+    }
+
+    private fun mainScreen() {
+        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationRepeat(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                finish()
+            }
+        })
+        floatingActionButtonHomeInAdd.startAnimation(animation)
     }
 
     private fun getImportance(): Importance? {
@@ -89,27 +103,36 @@ class AddPlanActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun savePlan() {
-        val title = editTextPlanTitle.text.toString().trim()
-        val importance = getImportance()
-        if (title.isEmpty()) {
-            Toast.makeText(
-                this,
-                getString(R.string.fill_in_the_text),
-                Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-        if (importance == null) {
-            Toast.makeText(
-                this,
-                getString(R.string.fill_in_the_importance),
-                Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-        val plan = Plan(0, title, getDate(), importance)
-        viewModel.savePlan(plan)
-        finish()
+        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationRepeat(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                val title = editTextPlanTitle.text.toString().trim()
+                val importance = getImportance()
+                if (title.isEmpty()) {
+                    getToast(getString(R.string.fill_in_the_text))
+                    return
+                }
+                if (importance == null) {
+                    getToast(getString(R.string.fill_in_the_importance))
+                    return
+                }
+                val plan = Plan(0, title, getDate(), importance)
+                viewModel.savePlan(plan)
+                finish()
+            }
+        })
+        buttonSave.startAnimation(animation)
+    }
+
+    private fun getToast(stringOfToast: String) {
+        Toast.makeText(
+            this,
+            stringOfToast,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -118,6 +141,19 @@ class AddPlanActivity : AppCompatActivity() {
     }
 
     private fun openCalendar() {
+        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_button)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationRepeat(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                openCalendarPicker()
+            }
+        })
+        floatingActionButtonCalendar.startAnimation(animation)
+    }
+
+    private fun openCalendarPicker() {
         viewModel.openDatePicker(this)
     }
 
