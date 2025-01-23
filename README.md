@@ -1,4 +1,4 @@
-<img src="https://github.com/user-attachments/assets/df30c26a-fe04-4169-99be-eb5a8c897583" width="300" />
+<img src="https://github.com/user-attachments/assets/e0b6681d-fe4d-4f50-8949-a89c38adba65" width="200" />
 
 # **My plans app for android.**  
 *Приложение мои планы для андроид.*
