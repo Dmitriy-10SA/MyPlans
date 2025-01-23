@@ -9,7 +9,7 @@
 - Kotlin  
 - MVVM  
 - Clean Architecture
-- RxJava
+- RxJava 2
 - Room Database
 
 ---
