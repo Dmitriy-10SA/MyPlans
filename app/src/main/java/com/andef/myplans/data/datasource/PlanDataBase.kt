@@ -25,6 +25,6 @@ abstract class PlanDataBase: RoomDatabase() {
             return instance!!
         }
 
-        const val DB_NAME = "Plan.db"
+        private const val DB_NAME = "Plan.db"
     }
 }
