@@ -18,4 +18,4 @@
 *Cсылка на скачивание приложения:*
 
 
-[**Скачать приложение**](https://www.rustore.ru/catalog/app/com.andef.myplans)
+[**Download app (скачать приложение)**](https://www.rustore.ru/catalog/app/com.andef.myplans)
