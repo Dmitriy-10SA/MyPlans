@@ -436,7 +436,7 @@ class MainActivity : AppCompatActivity() {
     private fun actionForCalendar() {
         recyclerViewPlansInPlans.visibility = GONE
         calendarView.visibility = VISIBLE
-        textViewDate.visibility = VISIBLE
+        textViewDate.visibility = GONE
         recyclerViewPlansInCalendar.visibility = VISIBLE
     }
 

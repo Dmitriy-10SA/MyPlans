@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.andef.myplans.R
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
+import com.andef.myplans.domain.entities.PlanItem
 
 class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
     var isDarkTheme = false
@@ -21,12 +22,35 @@ class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
             notifyDataSetChanged()
         }
 
-    private var _plans = ArrayList<Plan>()
-    var plans = _plans.toList()
-        get() = _plans.toList()
+    private var _plans = ArrayList<PlanItem>()
+    var plans = listOf<Plan>()
+        get() {
+            val plansOut = ArrayList<Plan>()
+            _plans.forEach {
+                if (it is PlanItem.DateInItem) {
+                    plansOut.add(Plan(0, "0", "0", Importance.LOW))
+                } else {
+                    plansOut.add((it as PlanItem.PlanInItem).plan)
+                }
+            }
+            return plansOut
+        }
         set(value) {
-            _plans = value as ArrayList<Plan>
             field = value.toList()
+            val groupedPlans = field.groupBy { it.date }
+                .toSortedMap { date1, date2 ->
+                    val formatter: (String) -> String = { date ->
+                        val parts = date.split("/")
+                        "%04d-%02d-%02d".format(parts[2].toInt(), parts[1].toInt(), parts[0].toInt())
+                    }
+                    formatter(date1).compareTo(formatter(date2))
+                }
+            val items = ArrayList<PlanItem>()
+            groupedPlans.forEach { (date, plans) ->
+                items.add(PlanItem.DateInItem(date))
+                items.addAll(plans.map { PlanItem.PlanInItem(it) } )
+            }
+            _plans = items
             notifyDataSetChanged()
         }
 
@@ -36,56 +60,81 @@ class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanViewHolder {
+        val resId = if (viewType == VIEW_DATE){
+            R.layout.date_item
+        } else {
+            R.layout.plan_item
+        }
         val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.plan_item,
+            resId,
             parent,
             false
         )
         return PlanViewHolder(view)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (_plans[position] is PlanItem.DateInItem) {
+            VIEW_DATE
+        } else {
+            VIEW_PLAN
+        }
+    }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: PlanViewHolder, position: Int) {
         val plan = _plans[position]
-        if (isDarkTheme) {
-            holder.cardViewPlanItem.setCardBackgroundColor(Color.rgb(85, 85, 85))
-            holder.textViewPlanText.setTextColor(Color.rgb(212, 212, 212))
-            val background = when (plan.importance) {
-                Importance.LOW -> {
-                    holder.itemView.context.getDrawable(R.drawable.green_circle_black)
-                }
-
-                Importance.MEDIUM -> {
-                    holder.itemView.context.getDrawable(R.drawable.orange_circle_black)
-                }
-
-                else -> {
-                    holder.itemView.context.getDrawable(R.drawable.red_circle)
-                }
+        if (plan is PlanItem.DateInItem) {
+            if (isDarkTheme) {
+                holder.textViewPlanText.background = holder.itemView.context.getDrawable(R.drawable.frame_black)
+                holder.textViewPlanText.setTextColor(Color.rgb(212, 212, 212))
+            } else {
+                holder.textViewPlanText.background = holder.itemView.context.getDrawable(R.drawable.frame)
+                holder.textViewPlanText.setTextColor(Color.BLACK)
             }
-            holder.imageViewImportance.background = background
+            holder.textViewPlanText.text = plan.date
         } else {
-            holder.cardViewPlanItem.setCardBackgroundColor(Color.rgb(253, 253, 253))
-            holder.textViewPlanText.setTextColor(Color.BLACK)
-            val background = when (plan.importance) {
-                Importance.LOW -> {
-                    holder.itemView.context.getDrawable(R.drawable.green_circle)
-                }
+            val planItem = (plan as PlanItem.PlanInItem).plan
+            if (isDarkTheme) {
+                holder.cardViewPlanItem.setCardBackgroundColor(Color.rgb(85, 85, 85))
+                holder.textViewPlanText.setTextColor(Color.rgb(212, 212, 212))
+                val background = when (planItem.importance) {
+                    Importance.LOW -> {
+                        holder.itemView.context.getDrawable(R.drawable.green_circle_black)
+                    }
 
-                Importance.MEDIUM -> {
-                    holder.itemView.context.getDrawable(R.drawable.orange_circle)
-                }
+                    Importance.MEDIUM -> {
+                        holder.itemView.context.getDrawable(R.drawable.orange_circle_black)
+                    }
 
-                else -> {
-                    holder.itemView.context.getDrawable(R.drawable.red_circle)
+                    else -> {
+                        holder.itemView.context.getDrawable(R.drawable.red_circle)
+                    }
                 }
+                holder.imageViewImportance.background = background
+            } else {
+                holder.cardViewPlanItem.setCardBackgroundColor(Color.rgb(253, 253, 253))
+                holder.textViewPlanText.setTextColor(Color.BLACK)
+                val background = when (planItem.importance) {
+                    Importance.LOW -> {
+                        holder.itemView.context.getDrawable(R.drawable.green_circle)
+                    }
+
+                    Importance.MEDIUM -> {
+                        holder.itemView.context.getDrawable(R.drawable.orange_circle)
+                    }
+
+                    else -> {
+                        holder.itemView.context.getDrawable(R.drawable.red_circle)
+                    }
+                }
+                holder.imageViewImportance.background = background
             }
-            holder.imageViewImportance.background = background
-        }
-        holder.textViewPlanText.text = plan.title
-        holder.textViewPlanText.setOnClickListener {
-            if (onPlanClickListener != null) {
-                onPlanClickListener!!.onClick(plan)
+            holder.textViewPlanText.text = planItem.title
+            holder.textViewPlanText.setOnClickListener {
+                if (onPlanClickListener != null) {
+                    onPlanClickListener!!.onClick(planItem)
+                }
             }
         }
     }
@@ -102,5 +151,10 @@ class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
         val textViewPlanText = itemView.findViewById<TextView>(R.id.textViewPlanText)
         val imageViewImportance = itemView.findViewById<ImageView>(R.id.imageViewImportance)
         val cardViewPlanItem = itemView.findViewById<CardView>(R.id.cardViewPlanItem)
+    }
+
+    companion object {
+        private const val VIEW_DATE = 1
+        private const val VIEW_PLAN = 2
     }
 }
