@@ -379,17 +379,19 @@ class MainActivity : AppCompatActivity() {
 
         textViewDate.setTextColor(Color.BLACK)
         textViewDate.background = getDrawable(R.drawable.frame)
+
         cardViewPlans.setCardBackgroundColor(getColor(R.color.card_back_color))
         cardViewCalendar.setCardBackgroundColor(getColor(R.color.card_back_color))
         cardViewSettings.setCardBackgroundColor(getColor(R.color.card_back_color))
+
         textViewPlansInPlans.setTextColor(Color.BLACK)
         imageViewPlansInPlans.setImageDrawable(getDrawable(R.drawable.plan))
+
         textViewCalendarInCalendar.setTextColor(Color.BLACK)
         imageViewCalendarInCalendar.setImageDrawable(getDrawable(R.drawable.calendar))
+
         textViewSettings.setTextColor(Color.BLACK)
         imageViewSettings.setImageDrawable(getDrawable(R.drawable.dots))
-
-        floatingActionButtonAddPlan.alpha = 1f
 
         plansInPlanAdapter.isDarkTheme = false
         plansInCalenderAdapter.isDarkTheme = false
