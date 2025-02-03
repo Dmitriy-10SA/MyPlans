@@ -3,7 +3,6 @@ package com.andef.myplans.presentation.ui.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.animation.Animation
@@ -21,7 +20,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.andef.myplans.R
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
-import com.andef.myplans.presentation.ui.activity.AddPlanActivity.Companion
 import com.andef.myplans.presentation.ui.viewmodel.ChangePlanViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -84,16 +82,18 @@ class ChangePlanActivity : AppCompatActivity() {
             1 -> radioButtonHigh.isChecked = true
         }
 
-        floatingActionButtonCalendar = findViewById<FloatingActionButton?>(R.id.floatingActionButtonCalendarInChange).apply {
-            setOnClickListener {
-                openCalendar()
+        floatingActionButtonCalendar =
+            findViewById<FloatingActionButton?>(R.id.floatingActionButtonCalendarInChange).apply {
+                setOnClickListener {
+                    openCalendar()
+                }
             }
-        }
-        floatingActionButtonHome = findViewById<FloatingActionButton?>(R.id.floatingActionButtonHomeInChange).apply {
-            setOnClickListener {
-                mainScreen()
+        floatingActionButtonHome =
+            findViewById<FloatingActionButton?>(R.id.floatingActionButtonHomeInChange).apply {
+                setOnClickListener {
+                    mainScreen()
+                }
             }
-        }
 
         buttonSave = findViewById<Button?>(R.id.buttonSaveInChange).apply {
             setOnClickListener {
@@ -107,7 +107,8 @@ class ChangePlanActivity : AppCompatActivity() {
     }
 
     private fun mainScreen() {
-        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
+        val animation =
+            android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationRepeat(animation: Animation?) {}
@@ -146,7 +147,8 @@ class ChangePlanActivity : AppCompatActivity() {
         textViewLastDate.setTextColor(getColor(R.color.white_text_black))
 
         radioButtonLow.background = getDrawable(R.drawable.green_black_background_for_importance)
-        radioButtonMedium.background = getDrawable(R.drawable.orange_black_background_for_importance)
+        radioButtonMedium.background =
+            getDrawable(R.drawable.orange_black_background_for_importance)
         radioButtonHigh.background = getDrawable(R.drawable.red_black_background_for_importance)
         radioButtonLow.alpha = 0.7f
         radioButtonMedium.alpha = 0.7f
@@ -157,7 +159,8 @@ class ChangePlanActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun changePlan() {
-        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
+        val animation =
+            android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationRepeat(animation: Animation?) {}
@@ -190,7 +193,8 @@ class ChangePlanActivity : AppCompatActivity() {
     }
 
     private fun openCalendar() {
-        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_button)
+        val animation =
+            android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_button)
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationRepeat(animation: Animation?) {}

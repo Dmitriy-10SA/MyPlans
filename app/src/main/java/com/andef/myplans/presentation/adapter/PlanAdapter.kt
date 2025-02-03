@@ -8,15 +8,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.andef.myplans.R
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
-import org.w3c.dom.Text
 
-class PlanAdapter: Adapter<PlanAdapter.PlanViewHolder>() {
+class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
     var isDarkTheme = false
         set(value) {
             field = value
@@ -101,8 +99,8 @@ class PlanAdapter: Adapter<PlanAdapter.PlanViewHolder>() {
     }
 
     class PlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textViewPlanText= itemView.findViewById<TextView>(R.id.textViewPlanText)
-        val imageViewImportance= itemView.findViewById<ImageView>(R.id.imageViewImportance)
-        val cardViewPlanItem= itemView.findViewById<CardView>(R.id.cardViewPlanItem)
+        val textViewPlanText = itemView.findViewById<TextView>(R.id.textViewPlanText)
+        val imageViewImportance = itemView.findViewById<ImageView>(R.id.imageViewImportance)
+        val cardViewPlanItem = itemView.findViewById<CardView>(R.id.cardViewPlanItem)
     }
 }

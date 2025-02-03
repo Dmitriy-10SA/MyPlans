@@ -17,11 +17,13 @@ import io.reactivex.schedulers.Schedulers
 import java.time.LocalDate
 import java.util.Calendar
 
-class AddPlanViewModel(application: Application) : AndroidViewModel(application), OnSelectDateListener {
+class AddPlanViewModel(application: Application) : AndroidViewModel(application),
+    OnSelectDateListener {
     private val compositeDisposable = CompositeDisposable()
 
     @RequiresApi(Build.VERSION_CODES.O)
-    var date: String = "${LocalDate.now().dayOfMonth}/${LocalDate.now().month.value}/${LocalDate.now().year}"
+    var date: String =
+        "${LocalDate.now().dayOfMonth}/${LocalDate.now().month.value}/${LocalDate.now().year}"
         private set
 
     fun openDatePickerWhite(context: Context) {

@@ -8,10 +8,10 @@ import com.andef.myplans.data.dao.PlanDao
 import com.andef.myplans.domain.entities.Plan
 
 @Database(entities = [Plan::class], version = 1, exportSchema = false)
-abstract class PlanDataBase: RoomDatabase() {
+abstract class PlanDataBase : RoomDatabase() {
     abstract val planDao: PlanDao
 
-    companion object  {
+    companion object {
         private var instance: PlanDataBase? = null
 
         fun getInstance(application: Application): PlanDataBase {

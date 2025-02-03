@@ -8,7 +8,7 @@ import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.domain.repository.PlanRepository
 import io.reactivex.Completable
 
-class PlanRepositoryImpl(application: Application): PlanRepository {
+class PlanRepositoryImpl(application: Application) : PlanRepository {
     companion object {
         private var instance: PlanRepositoryImpl? = null
 

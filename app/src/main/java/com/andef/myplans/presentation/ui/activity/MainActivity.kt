@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.View.resolveSizeAndState
 import android.view.animation.Animation
 import android.widget.Button
 import android.widget.ImageView
@@ -317,8 +316,10 @@ class MainActivity : AppCompatActivity() {
                 plansInCalenderAdapter.isDarkTheme = true
             } else {
                 view.background = getDrawable(R.drawable.alert_dialog_background)
-                switchChangeTheme.trackTintList = ColorStateList.valueOf(getColor(R.color.button_add_white))
-                switchChangeTheme.thumbTintList = ColorStateList.valueOf(getColor(R.color.button_add_white))
+                switchChangeTheme.trackTintList =
+                    ColorStateList.valueOf(getColor(R.color.button_add_white))
+                switchChangeTheme.thumbTintList =
+                    ColorStateList.valueOf(getColor(R.color.button_add_white))
                 buttonSave.background.setTint(getColor(R.color.button_add_white))
                 buttonSave.setTextColor(Color.WHITE)
                 lightTheme()

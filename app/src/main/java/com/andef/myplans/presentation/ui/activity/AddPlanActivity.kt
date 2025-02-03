@@ -3,7 +3,6 @@ package com.andef.myplans.presentation.ui.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.animation.Animation
@@ -109,7 +108,8 @@ class AddPlanActivity : AppCompatActivity() {
         textViewHintDeleteChange.setTextColor(getColor(R.color.white_text_black))
 
         radioButtonLow.background = getDrawable(R.drawable.green_black_background_for_importance)
-        radioButtonMedium.background = getDrawable(R.drawable.orange_black_background_for_importance)
+        radioButtonMedium.background =
+            getDrawable(R.drawable.orange_black_background_for_importance)
         radioButtonHigh.background = getDrawable(R.drawable.red_black_background_for_importance)
         radioButtonLow.alpha = 0.7f
         radioButtonMedium.alpha = 0.7f

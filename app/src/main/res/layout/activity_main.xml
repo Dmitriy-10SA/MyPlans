@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/plan_item"
-        tools:itemCount="20"/>
+        tools:itemCount="20" />
 
     <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calendarView"
