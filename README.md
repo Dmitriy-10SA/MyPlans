@@ -11,6 +11,7 @@
 - Clean Architecture
 - RxJava 2
 - Room Database
+- SharedPreferences
 
 ---
 
