@@ -29,14 +29,32 @@ class ChangePlanViewModel(application: Application) : AndroidViewModel(applicati
         date = lastDate
     }
 
-    fun openDatePicker(context: Context) {
+    fun openDatePickerWhite(context: Context) {
         DatePickerBuilder(context, this)
             .pickerType(CalendarView.ONE_DAY_PICKER)
             .headerColor(R.color.my_blue)
+            .abbreviationsLabelsColor(R.color.black)
             .headerLabelColor(R.color.white)
             .pagesColor(R.color.my_white)
             .selectionColor(R.color.my_blue)
             .selectionLabelColor(R.color.white)
+            .daysLabelsColor(R.color.black)
+            .dialogButtonsColor(R.color.black)
+            .todayLabelColor(R.color.my_blue)
+            .build()
+            .show()
+    }
+
+    fun openDatePickerBlack(context: Context) {
+        DatePickerBuilder(context, this)
+            .pickerType(CalendarView.ONE_DAY_PICKER)
+            .headerColor(R.color.black)
+            .headerLabelColor(R.color.white_text_black)
+            .abbreviationsBarColor(R.color.white_text_black)
+            .abbreviationsLabelsColor(R.color.black)
+            .pagesColor(R.color.white_text_black)
+            .selectionColor(R.color.black)
+            .selectionLabelColor(R.color.white_text_black)
             .daysLabelsColor(R.color.black)
             .dialogButtonsColor(R.color.black)
             .todayLabelColor(R.color.my_blue)

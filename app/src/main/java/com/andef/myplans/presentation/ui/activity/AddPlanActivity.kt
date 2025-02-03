@@ -1,16 +1,20 @@
 package com.andef.myplans.presentation.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.animation.Animation
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -21,7 +25,11 @@ import com.andef.myplans.presentation.ui.viewmodel.AddPlanViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AddPlanActivity : AppCompatActivity() {
+    private lateinit var main: ConstraintLayout
+
     private lateinit var editTextPlanTitle: EditText
+
+    private lateinit var textViewHintDeleteChange: TextView
 
     private lateinit var radioButtonLow: RadioButton
     private lateinit var radioButtonMedium: RadioButton
@@ -52,32 +60,67 @@ class AddPlanActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initViews() {
+        main = findViewById(R.id.main)
+
         editTextPlanTitle = findViewById(R.id.editTextPlanTitleInAdd)
+
+        textViewHintDeleteChange = findViewById(R.id.textViewHintDeleteChange)
 
         radioButtonLow = findViewById(R.id.radioButtonLowInAdd)
         radioButtonMedium = findViewById(R.id.radioButtonMediumInAdd)
         radioButtonHigh = findViewById(R.id.radioButtonHighInAdd)
 
-        floatingActionButtonCalendar = findViewById<FloatingActionButton?>(R.id.floatingActionButtonCalendarInAdd).apply {
-            setOnClickListener {
-                openCalendar()
+        floatingActionButtonCalendar =
+            findViewById<FloatingActionButton?>(R.id.floatingActionButtonCalendarInAdd).apply {
+                setOnClickListener {
+                    openCalendar()
+                }
             }
-        }
-        floatingActionButtonHomeInAdd = findViewById<FloatingActionButton?>(R.id.floatingActionButtonHomeInAdd).apply {
-            setOnClickListener {
-               mainScreen()
-           }
-        }
+        floatingActionButtonHomeInAdd =
+            findViewById<FloatingActionButton?>(R.id.floatingActionButtonHomeInAdd).apply {
+                setOnClickListener {
+                    mainScreen()
+                }
+            }
 
         buttonSave = findViewById<Button?>(R.id.buttonSaveInAdd).apply {
             setOnClickListener {
                 savePlan()
             }
         }
+
+        if (intent.getBooleanExtra(EXTRA_IS_DARK_THEME, false)) {
+            darkTheme()
+        }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun darkTheme() {
+        main.background = getDrawable(R.drawable.app_background_black)
+
+        editTextPlanTitle.background = getDrawable(R.drawable.frame_black)
+        editTextPlanTitle.setTextColor(getColor(R.color.white))
+        editTextPlanTitle.setHintTextColor(getColor(R.color.white))
+        editTextPlanTitle.alpha = 0.8f
+
+        floatingActionButtonCalendar.alpha = 0.7f
+        floatingActionButtonHomeInAdd.alpha = 0.7f
+
+        textViewHintDeleteChange.setTextColor(getColor(R.color.white_text_black))
+
+        radioButtonLow.background = getDrawable(R.drawable.green_black_background_for_importance)
+        radioButtonMedium.background = getDrawable(R.drawable.orange_black_background_for_importance)
+        radioButtonHigh.background = getDrawable(R.drawable.red_black_background_for_importance)
+        radioButtonLow.alpha = 0.7f
+        radioButtonMedium.alpha = 0.7f
+        radioButtonHigh.alpha = 0.7f
+
+        buttonSave.alpha = 0.7f
     }
 
     private fun mainScreen() {
-        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
+        val animation =
+            android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationRepeat(animation: Animation?) {}
@@ -103,7 +146,8 @@ class AddPlanActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun savePlan() {
-        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
+        val animation =
+            android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationRepeat(animation: Animation?) {}
@@ -141,7 +185,8 @@ class AddPlanActivity : AppCompatActivity() {
     }
 
     private fun openCalendar() {
-        val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_button)
+        val animation =
+            android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_button)
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationRepeat(animation: Animation?) {}
@@ -154,12 +199,21 @@ class AddPlanActivity : AppCompatActivity() {
     }
 
     private fun openCalendarPicker() {
-        viewModel.openDatePicker(this)
+        if (intent.getBooleanExtra(EXTRA_IS_DARK_THEME, false)) {
+            viewModel.openDatePickerBlack(this)
+        } else {
+            viewModel.openDatePickerWhite(this)
+        }
+
     }
 
     companion object {
-        fun newIntent(context: Context, ): Intent {
-            return Intent(context, AddPlanActivity::class.java)
+        private const val EXTRA_IS_DARK_THEME = "IS_DARK_THEME"
+
+        fun newIntent(context: Context, isDarkTheme: Boolean): Intent {
+            val intent = Intent(context, AddPlanActivity::class.java)
+            intent.putExtra(EXTRA_IS_DARK_THEME, isDarkTheme)
+            return intent
         }
     }
 }

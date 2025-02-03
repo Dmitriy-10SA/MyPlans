@@ -16,4 +16,6 @@
     <string name="wo_plans">Планов нет! Выберите день!</string>
     <string name="del_plan">План можно будет удалить свайпом влево или вправо. Изменить план можно нажав на него.</string>
     <string name="last_date">"Прошлая дата: "</string>
+    <string name="settings">"Настройки"</string>
+    <string name="dark_theme">"Темная тема"</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.andef.myplans.presentation.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.animation.Animation
@@ -10,19 +12,22 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.andef.myplans.R
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
+import com.andef.myplans.presentation.ui.activity.AddPlanActivity.Companion
 import com.andef.myplans.presentation.ui.viewmodel.ChangePlanViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ChangePlanActivity : AppCompatActivity() {
+    private lateinit var main: ConstraintLayout
+
     private lateinit var editTextPlanTitle: EditText
 
     private lateinit var textViewLastDate: TextView
@@ -55,6 +60,8 @@ class ChangePlanActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initViews() {
+        main = findViewById(R.id.main)
+
         editTextPlanTitle = findViewById<EditText?>(R.id.editTextPlanTitleInChange).apply {
             setText(intent.getStringExtra(EXTRA_TITLE))
         }
@@ -93,6 +100,10 @@ class ChangePlanActivity : AppCompatActivity() {
                 changePlan()
             }
         }
+
+        if (intent.getBooleanExtra(EXTRA_IS_DARK_THEME, false)) {
+            darkTheme()
+        }
     }
 
     private fun mainScreen() {
@@ -118,6 +129,30 @@ class ChangePlanActivity : AppCompatActivity() {
         } else {
             null
         }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun darkTheme() {
+        main.background = getDrawable(R.drawable.app_background_black)
+
+        editTextPlanTitle.background = getDrawable(R.drawable.frame_black)
+        editTextPlanTitle.setTextColor(getColor(R.color.white))
+        editTextPlanTitle.setHintTextColor(getColor(R.color.white))
+        editTextPlanTitle.alpha = 0.8f
+
+        floatingActionButtonCalendar.alpha = 0.7f
+        floatingActionButtonHome.alpha = 0.7f
+
+        textViewLastDate.setTextColor(getColor(R.color.white_text_black))
+
+        radioButtonLow.background = getDrawable(R.drawable.green_black_background_for_importance)
+        radioButtonMedium.background = getDrawable(R.drawable.orange_black_background_for_importance)
+        radioButtonHigh.background = getDrawable(R.drawable.red_black_background_for_importance)
+        radioButtonLow.alpha = 0.7f
+        radioButtonMedium.alpha = 0.7f
+        radioButtonHigh.alpha = 0.7f
+
+        buttonSave.alpha = 0.7f
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -168,7 +203,11 @@ class ChangePlanActivity : AppCompatActivity() {
     }
 
     private fun openCalendarPicker() {
-        viewModel.openDatePicker(this)
+        if (intent.getBooleanExtra(EXTRA_IS_DARK_THEME, false)) {
+            viewModel.openDatePickerBlack(this)
+        } else {
+            viewModel.openDatePickerWhite(this)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -177,6 +216,7 @@ class ChangePlanActivity : AppCompatActivity() {
     }
 
     companion object {
+        private const val EXTRA_IS_DARK_THEME = "IS_DARK_THEME"
         private const val EXTRA_ID = "id"
         private const val EXTRA_TITLE = "title"
         private const val EXTRA_DATE = "date"
@@ -187,13 +227,15 @@ class ChangePlanActivity : AppCompatActivity() {
             id: Int,
             title: String,
             date: String,
-            importance: Int
+            importance: Int,
+            isDarkTheme: Boolean
         ): Intent {
             val intent = Intent(context, ChangePlanActivity::class.java)
             intent.putExtra(EXTRA_ID, id)
             intent.putExtra(EXTRA_TITLE, title)
             intent.putExtra(EXTRA_DATE, date)
             intent.putExtra(EXTRA_IMPORTANCE, importance)
+            intent.putExtra(EXTRA_IS_DARK_THEME, isDarkTheme)
             return intent
         }
     }

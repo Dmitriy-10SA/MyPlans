@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@drawable/app_background"
+    android:background="@drawable/app_background_white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.activity.MainActivity">
@@ -66,6 +66,7 @@
         tools:visibility="visible"
         android:layout_height="0dp"
         android:visibility="gone"
+        tools:listitem="@layout/plan_item"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/textViewDate"
         app:layout_constraintBottom_toTopOf="@id/cardViewPlans"
@@ -77,7 +78,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#F0F0F0"
-        android:backgroundTint="#F0F0F0"
+
         app:cardCornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/cardViewCalendar"
@@ -92,6 +93,7 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
+                android:id="@+id/imageViewPlansInPlans"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/list_of_plans"
@@ -101,6 +103,7 @@
                 android:src="@drawable/plan" />
 
             <TextView
+                android:id="@+id/textViewPlansInPlans"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/plans"
@@ -113,11 +116,10 @@
         android:id="@+id/cardViewCalendar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#F0F0F0"
         app:cardBackgroundColor="#F0F0F0"
         app:cardCornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cardViewSettings"
         app:layout_constraintStart_toEndOf="@id/cardViewPlans">
 
         <LinearLayout
@@ -129,6 +131,7 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
+                android:id="@+id/imageViewCalendarInCalendar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/calendar"
@@ -138,9 +141,48 @@
                 android:src="@drawable/calendar" />
 
             <TextView
+                android:id="@+id/textViewCalendarInCalendar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/calendar"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewSettings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#F0F0F0"
+        app:cardCornerRadius="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cardViewCalendar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="5dp"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/imageViewSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/calendar"
+                android:adjustViewBounds="true"
+                android:maxWidth="75dp"
+                android:maxHeight="23dp"
+                android:src="@drawable/dots" />
+
+            <TextView
+                android:id="@+id/textViewSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
         </LinearLayout>
