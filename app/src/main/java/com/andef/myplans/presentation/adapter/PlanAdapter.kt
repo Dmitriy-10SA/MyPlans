@@ -2,18 +2,26 @@ package com.andef.myplans.presentation.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.andef.myplans.R
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.domain.entities.PlanItem
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
     var isDarkTheme = false
@@ -81,7 +89,8 @@ class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("UseCompatLoadingForDrawables", "SimpleDateFormat", "SetTextI18n")
     override fun onBindViewHolder(holder: PlanViewHolder, position: Int) {
         val plan = _plans[position]
         if (plan is PlanItem.DateInItem) {
@@ -92,7 +101,25 @@ class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
                 holder.textViewPlanText.background = holder.itemView.context.getDrawable(R.drawable.frame)
                 holder.textViewPlanText.setTextColor(Color.BLACK)
             }
-            holder.textViewPlanText.text = plan.date
+            val dayMonthYear = plan.date.split("/")
+            val date = "${dayMonthYear[0]}.${dayMonthYear[1]}.${dayMonthYear[2]}"
+            val sdf = SimpleDateFormat("d.M.yyyy")
+            val currentDate = sdf.format(Date())
+            val formatter = DateTimeFormatter.ofPattern("d.M.yyyy")
+            val yesterday = LocalDate.now().minusDays(1).format(formatter)
+            val tomorrow = LocalDate.now().plusDays(1).format(formatter)
+            when (date) {
+                currentDate -> holder.textViewPlanText.text = holder.itemView.context.getString(R.string.today)
+                yesterday -> holder.textViewPlanText.text = holder.itemView.context.getString(R.string.yesterday)
+                tomorrow -> holder.textViewPlanText.text = holder.itemView.context.getString(R.string.tomorrow)
+                else -> {
+                    val inputFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
+                    val outputFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+                    val outputDate = LocalDate.parse(date, inputFormatter)
+                    val formattedDate = outputDate.format(outputFormatter)
+                    holder.textViewPlanText.text = formattedDate
+                }
+            }
         } else {
             val planItem = (plan as PlanItem.PlanInItem).plan
             if (isDarkTheme) {
