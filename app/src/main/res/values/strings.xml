@@ -18,4 +18,7 @@
     <string name="last_date">"Прошлая дата: "</string>
     <string name="settings">"Настройки"</string>
     <string name="dark_theme">"Темная тема"</string>
+    <string name="today">Сегодня</string>
+    <string name="tomorrow">Завтра</string>
+    <string name="yesterday">Вчера</string>
 </resources>

@@ -283,6 +283,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UseSwitchCompatOrMaterialCode", "UseCompatLoadingForDrawables")
     private fun settingsAction() {
         val view = layoutInflater.inflate(R.layout.alert_dialog_custom, null)
@@ -329,16 +330,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonSave.setOnClickListener {
-            val prefEditor = settingsTheme.edit()
-            if (switchChangeTheme.isChecked) {
-                darkTheme()
-                prefEditor.putBoolean(PREF_IS_DARK_THEME, true)
-            } else {
-                lightTheme()
-                prefEditor.putBoolean(PREF_IS_DARK_THEME, false)
-            }
-            prefEditor.apply()
-            dialog.dismiss()
+            val animation =
+                android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
+            animation.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {}
+                override fun onAnimationRepeat(animation: Animation?) {}
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    val prefEditor = settingsTheme.edit()
+                    if (switchChangeTheme.isChecked) {
+                        darkTheme()
+                        prefEditor.putBoolean(PREF_IS_DARK_THEME, true)
+                    } else {
+                        lightTheme()
+                        prefEditor.putBoolean(PREF_IS_DARK_THEME, false)
+                    }
+                    prefEditor.apply()
+                    dialog.dismiss()
+                }
+            })
+            it.startAnimation(animation)
         }
     }
 
