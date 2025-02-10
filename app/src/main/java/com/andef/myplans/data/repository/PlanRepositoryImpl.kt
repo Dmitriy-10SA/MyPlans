@@ -2,6 +2,7 @@ package com.andef.myplans.data.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import com.andef.myplans.data.datasource.PlanDataBase
 import com.andef.myplans.data.mappers.PlanMapper
 import com.andef.myplans.domain.entities.Importance
@@ -33,11 +34,19 @@ class PlanRepositoryImpl(application: Application) : PlanRepository {
     }
 
     override fun getPlans(): LiveData<List<Plan>> {
-        return planMapper.mapLiveDateDbModelToLiveDatePlan(planDataBase.planDao.getPlans())
+        return MediatorLiveData<List<Plan>>().apply {
+            addSource(planDataBase.planDao.getPlans()) {
+                value = planMapper.mapListDbModelToListPlan(it)
+            }
+        }
     }
 
     override fun getPlansByDate(date: String): LiveData<List<Plan>> {
-        return planMapper.mapLiveDateDbModelToLiveDatePlan(planDataBase.planDao.getPlansByDate(date))
+        return MediatorLiveData<List<Plan>>().apply {
+            addSource(planDataBase.planDao.getPlansByDate(date)) {
+                value = planMapper.mapListDbModelToListPlan(it)
+            }
+        }
     }
 
     override fun changePlanById(
