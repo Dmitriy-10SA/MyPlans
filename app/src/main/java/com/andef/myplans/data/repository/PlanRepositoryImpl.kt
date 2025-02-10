@@ -3,6 +3,7 @@ package com.andef.myplans.data.repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import com.andef.myplans.data.datasource.PlanDataBase
+import com.andef.myplans.data.mappers.PlanMapper
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.domain.repository.PlanRepository
@@ -21,9 +22,10 @@ class PlanRepositoryImpl(application: Application) : PlanRepository {
     }
 
     private val planDataBase = PlanDataBase.getInstance(application)
+    private val planMapper = PlanMapper()
 
     override fun add(plan: Plan): Completable {
-        return planDataBase.planDao.add(plan)
+        return planDataBase.planDao.add(planMapper.mapPlanToDbModel(plan))
     }
 
     override fun remove(id: Int): Completable {
@@ -31,11 +33,11 @@ class PlanRepositoryImpl(application: Application) : PlanRepository {
     }
 
     override fun getPlans(): LiveData<List<Plan>> {
-        return planDataBase.planDao.getPlans()
+        return planMapper.mapLiveDateDbModelToLiveDatePlan(planDataBase.planDao.getPlans())
     }
 
     override fun getPlansByDate(date: String): LiveData<List<Plan>> {
-        return planDataBase.planDao.getPlansByDate(date)
+        return planMapper.mapLiveDateDbModelToLiveDatePlan(planDataBase.planDao.getPlansByDate(date))
     }
 
     override fun changePlanById(
