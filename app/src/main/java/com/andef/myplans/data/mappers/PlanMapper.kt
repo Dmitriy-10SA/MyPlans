@@ -2,8 +2,9 @@ package com.andef.myplans.data.mappers
 
 import com.andef.myplans.data.datasource.PlanDbModel
 import com.andef.myplans.domain.entities.Plan
+import javax.inject.Inject
 
-class PlanMapper {
+class PlanMapper @Inject constructor() {
     fun mapPlanToDbModel(plan: Plan): PlanDbModel {
         return PlanDbModel(plan.id, plan.title, plan.date, plan.importance)
     }

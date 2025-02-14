@@ -1,13 +1,10 @@
 package com.andef.myplans.presentation.ui.viewmodel
 
-import android.app.Application
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import com.andef.myplans.R
 import com.andef.myplans.domain.entities.Plan
-import com.andef.myplans.domain.usecases.ChangePlanById
+import com.andef.myplans.domain.usecases.ChangePlanByIdUseCase
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.builders.DatePickerBuilder
 import com.applandeo.materialcalendarview.listeners.OnSelectDateListener
@@ -16,17 +13,18 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.time.LocalDate
 import java.util.Calendar
+import javax.inject.Inject
 
-class ChangePlanViewModel(application: Application) : AndroidViewModel(application),
+class ChangePlanViewModel @Inject constructor(
+    private val changePlanByIdUseCase: ChangePlanByIdUseCase
+) : ViewModel(),
     OnSelectDateListener {
     private val compositeDisposable = CompositeDisposable()
 
-    @RequiresApi(Build.VERSION_CODES.O)
     var date: String =
         "${LocalDate.now().dayOfMonth}/${LocalDate.now().month.value}/${LocalDate.now().year}"
         private set
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun lastDate(lastDate: String) {
         date = lastDate
     }
@@ -65,8 +63,7 @@ class ChangePlanViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun changePlan(plan: Plan) {
-        val disposable = ChangePlanById.execute(
-            getApplication(),
+        val disposable = changePlanByIdUseCase.execute(
             plan.id,
             plan.title,
             plan.date,
@@ -78,7 +75,6 @@ class ChangePlanViewModel(application: Application) : AndroidViewModel(applicati
         compositeDisposable.add(disposable)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onSelect(calendar: List<Calendar>) {
         val selectedDate = calendar[0]
         val day = selectedDate.get(Calendar.DAY_OF_MONTH)

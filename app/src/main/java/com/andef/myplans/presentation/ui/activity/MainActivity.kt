@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -14,7 +13,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -25,9 +23,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.andef.myplans.R
+import com.andef.myplans.databinding.ActivityMainBinding
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.presentation.adapter.PlanAdapter
+import com.andef.myplans.presentation.app.MyPlansApplication
+import com.andef.myplans.presentation.factory.ViewModelFactory
 import com.andef.myplans.presentation.ui.viewmodel.MainViewModel
 import com.applandeo.materialcalendarview.CalendarDay
 import com.applandeo.materialcalendarview.CalendarView
@@ -35,50 +36,36 @@ import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarDayClickListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.Calendar
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var main: ConstraintLayout
+    private val binding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
 
-    private lateinit var plansInPlanAdapter: PlanAdapter
-    private lateinit var plansInCalenderAdapter: PlanAdapter
+    private val component by lazy {
+        (application as MyPlansApplication).component
+    }
 
-    private lateinit var recyclerViewPlansInPlans: RecyclerView
-    private lateinit var recyclerViewPlansInCalendar: RecyclerView
-
-    private lateinit var imageViewPlansInPlans: ImageView
-    private lateinit var imageViewCalendarInCalendar: ImageView
-    private lateinit var imageViewSettings: ImageView
-
-    private lateinit var textViewDate: TextView
-    private lateinit var textViewPlansInPlans: TextView
-    private lateinit var textViewCalendarInCalendar: TextView
-    private lateinit var textViewSettings: TextView
-
-    private lateinit var calendarView: CalendarView
-
-    private lateinit var cardViewPlans: CardView
-    private lateinit var cardViewCalendar: CardView
-    private lateinit var cardViewSettings: CardView
-
-    private lateinit var floatingActionButtonAddPlan: FloatingActionButton
-
-    private lateinit var viewModel: MainViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+    }
+    @Inject
+    lateinit var plansInPlanAdapter: PlanAdapter
+    @Inject
+    lateinit var plansInCalenderAdapter: PlanAdapter
 
     private lateinit var itemTouchHelperForPlanInPlans: ItemTouchHelper
     private lateinit var itemTouchHelperForPlanInCalendar: ItemTouchHelper
 
     private lateinit var settingsTheme: SharedPreferences
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        setContentView(binding.root)
 
         initViews()
         initViewModel()
@@ -124,7 +111,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initBeforeStart() {
-        calendarView.setOnCalendarDayClickListener(object : OnCalendarDayClickListener {
+        binding.calendarView.setOnCalendarDayClickListener(object : OnCalendarDayClickListener {
             override fun onClick(calendarDay: CalendarDay) {
                 loadPlansByDate(calendarDay.calendar)
             }
@@ -147,7 +134,6 @@ class MainActivity : AppCompatActivity() {
                     return false
                 }
 
-                @RequiresApi(Build.VERSION_CODES.O)
                 override fun onSwiped(
                     viewHolder: RecyclerView.ViewHolder,
                     direction: Int
@@ -158,7 +144,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         itemTouchHelperForPlanInCalendar.apply {
-            attachToRecyclerView(recyclerViewPlansInCalendar)
+            attachToRecyclerView(binding.recyclerViewPlansInCalendar)
         }
     }
 
@@ -186,7 +172,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         itemTouchHelperForPlanInPlans.apply {
-            attachToRecyclerView(recyclerViewPlansInPlans)
+            attachToRecyclerView(binding.recyclerViewPlansInPlans)
         }
     }
 
@@ -198,12 +184,11 @@ class MainActivity : AppCompatActivity() {
             calendar.set(date[2].toInt(), date[1].toInt() - 1, date[0].toInt())
             calendarDays.add(EventDay(calendar, R.drawable.calendarplans))
         }
-        calendarView.setEvents(calendarDays)
+        binding.calendarView.setEvents(calendarDays)
     }
 
     @SuppressLint("SetTextI18n")
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.plansInPlans.observe(this) {
             plansInPlanAdapter.plans = it
             showEventDays(it)
@@ -214,66 +199,35 @@ class MainActivity : AppCompatActivity() {
                 val day = date[0].toInt()
                 val month = date[1].toInt()
                 val year = date[2].toInt()
-                textViewDate.text = "$day/$month/$year"
+                binding.textViewDate.text = "$day/$month/$year"
             } else {
-                textViewDate.text = getString(R.string.wo_plans)
+                binding.textViewDate.text = getString(R.string.wo_plans)
             }
             plansInCalenderAdapter.plans = it
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun initViews() {
-        main = findViewById(R.id.main)
+//        plansInPlanAdapter = PlanAdapter()
+//        plansInCalenderAdapter = PlanAdapter()
+        binding.recyclerViewPlansInPlans.adapter = plansInPlanAdapter
+        binding.recyclerViewPlansInCalendar.adapter = plansInCalenderAdapter
 
-        plansInPlanAdapter = PlanAdapter()
-        plansInCalenderAdapter = PlanAdapter()
-
-        recyclerViewPlansInPlans =
-            findViewById<RecyclerView?>(R.id.recyclerViewPlansInPlans).apply {
-                adapter = plansInPlanAdapter
-            }
-        recyclerViewPlansInCalendar =
-            findViewById<RecyclerView?>(R.id.recyclerViewPlansInCalendar).apply {
-                adapter = plansInCalenderAdapter
-            }
-
-        imageViewPlansInPlans = findViewById(R.id.imageViewPlansInPlans)
-        imageViewCalendarInCalendar = findViewById(R.id.imageViewCalendarInCalendar)
-        imageViewSettings = findViewById(R.id.imageViewSettings)
-
-        calendarView = findViewById(R.id.calendarView)
-
-        textViewDate = findViewById(R.id.textViewDate)
-        textViewPlansInPlans = findViewById(R.id.textViewPlansInPlans)
-        textViewCalendarInCalendar = findViewById(R.id.textViewCalendarInCalendar)
-        textViewSettings = findViewById(R.id.textViewSettings)
-
-        cardViewPlans = findViewById<CardView?>(R.id.cardViewPlans).apply {
-            setOnClickListener {
-                touchCardViewPlansAnim()
-                actionForPlans()
-            }
+        binding.cardViewPlans.setOnClickListener {
+            touchCardViewPlansAnim()
+            actionForPlans()
         }
-        cardViewCalendar = findViewById<CardView?>(R.id.cardViewCalendar).apply {
-            setOnClickListener {
-                touchCardViewCalendarAnim()
-                actionForCalendar()
-            }
+        binding.cardViewCalendar.setOnClickListener {
+            touchCardViewCalendarAnim()
+            actionForCalendar()
         }
-        cardViewSettings = findViewById<CardView?>(R.id.cardViewSettings).apply {
-            setOnClickListener {
-                touchCardViewChangeThemeAnim()
-                settingsAction()
-            }
+        binding.cardViewSettings.setOnClickListener {
+            touchCardViewChangeThemeAnim()
+            settingsAction()
         }
-
-        floatingActionButtonAddPlan =
-            findViewById<FloatingActionButton?>(R.id.floatingActionButtonAddPlan).apply {
-                setOnClickListener {
-                    addNewPlan()
-                }
-            }
+        binding.floatingActionButtonAddPlan.setOnClickListener {
+            addNewPlan()
+        }
 
         settingsTheme = application.getSharedPreferences(PREF_FILE_THEME, Context.MODE_PRIVATE)
         if (settingsTheme.getBoolean(PREF_IS_DARK_THEME, false)) {
@@ -283,7 +237,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UseSwitchCompatOrMaterialCode", "UseCompatLoadingForDrawables")
     private fun settingsAction() {
         val view = layoutInflater.inflate(R.layout.alert_dialog_custom, null)
@@ -355,27 +308,27 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun darkTheme() {
-        main.background = getDrawable(R.drawable.app_background_black)
+        binding.main.background = getDrawable(R.drawable.app_background_black)
 
-        calendarView.setHeaderColor(R.color.black)
-        calendarView.setHeaderLabelColor(R.color.white)
-        calendarView.alpha = 0.7f
+        binding.calendarView.setHeaderColor(R.color.black)
+        binding.calendarView.setHeaderLabelColor(R.color.white)
+        binding.calendarView.alpha = 0.7f
 
-        textViewDate.setTextColor(getColor(R.color.white_text_black))
-        textViewDate.background = getDrawable(R.drawable.frame_black)
+        binding.textViewDate.setTextColor(getColor(R.color.white_text_black))
+        binding.textViewDate.background = getDrawable(R.drawable.frame_black)
 
-        cardViewPlans.setCardBackgroundColor(getColor(R.color.card_back_color_black))
-        cardViewCalendar.setCardBackgroundColor(getColor(R.color.card_back_color_black))
-        cardViewSettings.setCardBackgroundColor(getColor(R.color.card_back_color_black))
+        binding.cardViewPlans.setCardBackgroundColor(getColor(R.color.card_back_color_black))
+        binding.cardViewCalendar.setCardBackgroundColor(getColor(R.color.card_back_color_black))
+        binding.cardViewSettings.setCardBackgroundColor(getColor(R.color.card_back_color_black))
 
-        textViewPlansInPlans.setTextColor(getColor(R.color.white_text_black))
-        imageViewPlansInPlans.setImageDrawable(getDrawable(R.drawable.plan_dark))
+        binding.textViewPlansInPlans.setTextColor(getColor(R.color.white_text_black))
+        binding.imageViewPlansInPlans.setImageDrawable(getDrawable(R.drawable.plan_dark))
 
-        textViewCalendarInCalendar.setTextColor(getColor(R.color.white_text_black))
-        imageViewCalendarInCalendar.setImageDrawable(getDrawable(R.drawable.calendar_black))
+        binding.textViewCalendarInCalendar.setTextColor(getColor(R.color.white_text_black))
+        binding.imageViewCalendarInCalendar.setImageDrawable(getDrawable(R.drawable.calendar_black))
 
-        textViewSettings.setTextColor(getColor(R.color.white_text_black))
-        imageViewSettings.setImageDrawable(getDrawable(R.drawable.dots_black))
+        binding.textViewSettings.setTextColor(getColor(R.color.white_text_black))
+        binding.imageViewSettings.setImageDrawable(getDrawable(R.drawable.dots_black))
 
         plansInPlanAdapter.isDarkTheme = true
         plansInCalenderAdapter.isDarkTheme = true
@@ -383,27 +336,27 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun lightTheme() {
-        main.background = getDrawable(R.drawable.app_background_white)
+        binding.main.background = getDrawable(R.drawable.app_background_white)
 
-        calendarView.setHeaderColor(R.color.header_color)
-        calendarView.setHeaderLabelColor(R.color.white)
-        calendarView.alpha = 1f
+        binding.calendarView.setHeaderColor(R.color.header_color)
+        binding.calendarView.setHeaderLabelColor(R.color.white)
+        binding.calendarView.alpha = 1f
 
-        textViewDate.setTextColor(Color.BLACK)
-        textViewDate.background = getDrawable(R.drawable.frame)
+        binding.textViewDate.setTextColor(Color.BLACK)
+        binding.textViewDate.background = getDrawable(R.drawable.frame)
 
-        cardViewPlans.setCardBackgroundColor(getColor(R.color.card_back_color))
-        cardViewCalendar.setCardBackgroundColor(getColor(R.color.card_back_color))
-        cardViewSettings.setCardBackgroundColor(getColor(R.color.card_back_color))
+        binding.cardViewPlans.setCardBackgroundColor(getColor(R.color.card_back_color))
+        binding.cardViewCalendar.setCardBackgroundColor(getColor(R.color.card_back_color))
+        binding.cardViewSettings.setCardBackgroundColor(getColor(R.color.card_back_color))
 
-        textViewPlansInPlans.setTextColor(Color.BLACK)
-        imageViewPlansInPlans.setImageDrawable(getDrawable(R.drawable.plan))
+        binding.textViewPlansInPlans.setTextColor(Color.BLACK)
+        binding.imageViewPlansInPlans.setImageDrawable(getDrawable(R.drawable.plan))
 
-        textViewCalendarInCalendar.setTextColor(Color.BLACK)
-        imageViewCalendarInCalendar.setImageDrawable(getDrawable(R.drawable.calendar))
+        binding.textViewCalendarInCalendar.setTextColor(Color.BLACK)
+        binding.imageViewCalendarInCalendar.setImageDrawable(getDrawable(R.drawable.calendar))
 
-        textViewSettings.setTextColor(Color.BLACK)
-        imageViewSettings.setImageDrawable(getDrawable(R.drawable.dots))
+        binding.textViewSettings.setTextColor(Color.BLACK)
+        binding.imageViewSettings.setImageDrawable(getDrawable(R.drawable.dots))
 
         plansInPlanAdapter.isDarkTheme = false
         plansInCalenderAdapter.isDarkTheme = false
@@ -412,19 +365,19 @@ class MainActivity : AppCompatActivity() {
     private fun touchCardViewChangeThemeAnim() {
         val animation =
             android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_cardview)
-        cardViewSettings.startAnimation(animation)
+        binding.cardViewSettings.startAnimation(animation)
     }
 
     private fun touchCardViewCalendarAnim() {
         val animation =
             android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_cardview)
-        cardViewCalendar.startAnimation(animation)
+        binding.cardViewCalendar.startAnimation(animation)
     }
 
     private fun touchCardViewPlansAnim() {
         val animation =
             android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_cardview)
-        cardViewPlans.startAnimation(animation)
+        binding.cardViewPlans.startAnimation(animation)
     }
 
     private fun addNewPlan() {
@@ -440,15 +393,14 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
-        floatingActionButtonAddPlan.startAnimation(animation)
+        binding.floatingActionButtonAddPlan.startAnimation(animation)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun actionForCalendar() {
-        recyclerViewPlansInPlans.visibility = GONE
-        calendarView.visibility = VISIBLE
-        textViewDate.visibility = GONE
-        recyclerViewPlansInCalendar.visibility = VISIBLE
+        binding.recyclerViewPlansInPlans.visibility = GONE
+        binding.calendarView.visibility = VISIBLE
+        binding.textViewDate.visibility = GONE
+        binding.recyclerViewPlansInCalendar.visibility = VISIBLE
     }
 
     @SuppressLint("SetTextI18n")
@@ -460,10 +412,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun actionForPlans() {
-        recyclerViewPlansInCalendar.visibility = GONE
-        calendarView.visibility = GONE
-        textViewDate.visibility = GONE
-        recyclerViewPlansInPlans.visibility = VISIBLE
+        binding.recyclerViewPlansInCalendar.visibility = GONE
+        binding.calendarView.visibility = GONE
+        binding.textViewDate.visibility = GONE
+        binding.recyclerViewPlansInPlans.visibility = VISIBLE
         viewModel.loadPlansInPlans(this)
     }
 

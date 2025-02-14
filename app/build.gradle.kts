@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp") version "2.0.21-1.0.27"
+    id("kotlin-kapt")
 }
 
 android {
@@ -10,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.andef.myplans"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 5
         versionName = "5.0"
@@ -34,9 +35,14 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
+    implementation("com.google.dagger:dagger:2.55")
+    kapt("com.google.dagger:dagger-compiler:2.55")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation(libs.androidx.constraintlayout)
     ksp("androidx.room:room-compiler:2.6.1")

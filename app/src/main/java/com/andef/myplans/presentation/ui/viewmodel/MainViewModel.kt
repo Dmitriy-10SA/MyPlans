@@ -1,19 +1,23 @@
 package com.andef.myplans.presentation.ui.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.andef.myplans.domain.entities.Plan
-import com.andef.myplans.domain.usecases.GetPlans
-import com.andef.myplans.domain.usecases.GetPlansByDate
-import com.andef.myplans.domain.usecases.RemovePlan
+import com.andef.myplans.domain.usecases.GetPlansByDateUseCase
+import com.andef.myplans.domain.usecases.GetPlansUseCase
+import com.andef.myplans.domain.usecases.RemovePlanUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel @Inject constructor(
+    private val getPlansUseCase: GetPlansUseCase,
+    private val removePlanUseCase: RemovePlanUseCase,
+    private val getPlansByDateUseCase: GetPlansByDateUseCase
+) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     private val _plansInPlans = MutableLiveData<List<Plan>>()
@@ -23,13 +27,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val plansInCalendar: LiveData<List<Plan>> = _plansInCalendar
 
     fun loadPlansInPlans(lifecycleOwner: LifecycleOwner) {
-        GetPlans.execute(getApplication()).observe(lifecycleOwner) {
+        getPlansUseCase.execute().observe(lifecycleOwner) {
             _plansInPlans.value = it
         }
     }
 
     fun removePlan(id: Int) {
-        val disposable = RemovePlan.execute(getApplication(), id)
+        val disposable = removePlanUseCase.execute(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
@@ -37,7 +41,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun loadPlansByDate(lifecycleOwner: LifecycleOwner, date: String) {
-        GetPlansByDate.execute(getApplication(), date).observe(lifecycleOwner) {
+        getPlansByDateUseCase.execute(date).observe(lifecycleOwner) {
             _plansInCalendar.value = it
         }
     }
