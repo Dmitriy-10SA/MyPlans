@@ -5,25 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.animation.Animation
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.andef.myplans.R
 import com.andef.myplans.databinding.ActivityChangePlanBinding
-import com.andef.myplans.di.DaggerMyPlansComponent
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
 import com.andef.myplans.presentation.app.MyPlansApplication
 import com.andef.myplans.presentation.factory.ViewModelFactory
 import com.andef.myplans.presentation.ui.viewmodel.ChangePlanViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import javax.inject.Inject
 
 class ChangePlanActivity : AppCompatActivity() {
@@ -115,10 +106,12 @@ class ChangePlanActivity : AppCompatActivity() {
 
         binding.textViewLastDate.setTextColor(getColor(R.color.white_text_black))
 
-        binding.radioButtonLowInChange.background = getDrawable(R.drawable.green_black_background_for_importance)
+        binding.radioButtonLowInChange.background =
+            getDrawable(R.drawable.green_black_background_for_importance)
         binding.radioButtonMediumInChange.background =
             getDrawable(R.drawable.orange_black_background_for_importance)
-        binding.radioButtonHighInChange.background = getDrawable(R.drawable.red_black_background_for_importance)
+        binding.radioButtonHighInChange.background =
+            getDrawable(R.drawable.red_black_background_for_importance)
         binding.radioButtonLowInChange.alpha = 0.7f
         binding.radioButtonMediumInChange.alpha = 0.7f
         binding.radioButtonHighInChange.alpha = 0.7f

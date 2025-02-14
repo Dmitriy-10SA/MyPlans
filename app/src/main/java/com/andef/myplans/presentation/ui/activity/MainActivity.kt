@@ -10,15 +10,9 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.animation.Animation
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Switch
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -31,10 +25,8 @@ import com.andef.myplans.presentation.app.MyPlansApplication
 import com.andef.myplans.presentation.factory.ViewModelFactory
 import com.andef.myplans.presentation.ui.viewmodel.MainViewModel
 import com.applandeo.materialcalendarview.CalendarDay
-import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarDayClickListener
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -52,8 +44,10 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
     }
+
     @Inject
     lateinit var plansInPlanAdapter: PlanAdapter
+
     @Inject
     lateinit var plansInCalenderAdapter: PlanAdapter
 

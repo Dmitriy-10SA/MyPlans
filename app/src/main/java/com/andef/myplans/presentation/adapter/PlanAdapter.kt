@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Date
 import javax.inject.Inject
 
-class PlanAdapter @Inject constructor() : Adapter<PlanAdapter.PlanViewHolder> () {
+class PlanAdapter @Inject constructor() : Adapter<PlanAdapter.PlanViewHolder>() {
     var isDarkTheme = false
         set(value) {
             field = value

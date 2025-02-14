@@ -3,7 +3,6 @@ package com.andef.myplans.di
 import android.app.Application
 import com.andef.myplans.data.dao.PlanDao
 import com.andef.myplans.data.datasource.PlanDataBase
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 
