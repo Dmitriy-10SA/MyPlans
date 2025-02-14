@@ -2,15 +2,12 @@ package com.andef.myplans.presentation.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.andef.myplans.R
@@ -21,9 +18,9 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Date
-import java.util.Locale
+import javax.inject.Inject
 
-class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
+class PlanAdapter @Inject constructor() : Adapter<PlanAdapter.PlanViewHolder> () {
     var isDarkTheme = false
         set(value) {
             field = value
@@ -49,14 +46,18 @@ class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
                 .toSortedMap { date1, date2 ->
                     val formatter: (String) -> String = { date ->
                         val parts = date.split("/")
-                        "%04d-%02d-%02d".format(parts[2].toInt(), parts[1].toInt(), parts[0].toInt())
+                        "%04d-%02d-%02d".format(
+                            parts[2].toInt(),
+                            parts[1].toInt(),
+                            parts[0].toInt()
+                        )
                     }
                     formatter(date1).compareTo(formatter(date2))
                 }
             val items = ArrayList<PlanItem>()
             groupedPlans.forEach { (date, plans) ->
                 items.add(PlanItem.DateInItem(date))
-                items.addAll(plans.map { PlanItem.PlanInItem(it) } )
+                items.addAll(plans.map { PlanItem.PlanInItem(it) })
             }
             _plans = items
             notifyDataSetChanged()
@@ -68,7 +69,7 @@ class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanViewHolder {
-        val resId = if (viewType == VIEW_DATE){
+        val resId = if (viewType == VIEW_DATE) {
             R.layout.date_item
         } else {
             R.layout.plan_item
@@ -89,16 +90,17 @@ class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UseCompatLoadingForDrawables", "SimpleDateFormat", "SetTextI18n")
     override fun onBindViewHolder(holder: PlanViewHolder, position: Int) {
         val plan = _plans[position]
         if (plan is PlanItem.DateInItem) {
             if (isDarkTheme) {
-                holder.textViewPlanText.background = holder.itemView.context.getDrawable(R.drawable.frame_black)
+                holder.textViewPlanText.background =
+                    holder.itemView.context.getDrawable(R.drawable.frame_black)
                 holder.textViewPlanText.setTextColor(Color.rgb(212, 212, 212))
             } else {
-                holder.textViewPlanText.background = holder.itemView.context.getDrawable(R.drawable.frame)
+                holder.textViewPlanText.background =
+                    holder.itemView.context.getDrawable(R.drawable.frame)
                 holder.textViewPlanText.setTextColor(Color.BLACK)
             }
             val dayMonthYear = plan.date.split("/")
@@ -109,9 +111,15 @@ class PlanAdapter : Adapter<PlanAdapter.PlanViewHolder>() {
             val yesterday = LocalDate.now().minusDays(1).format(formatter)
             val tomorrow = LocalDate.now().plusDays(1).format(formatter)
             when (date) {
-                currentDate -> holder.textViewPlanText.text = holder.itemView.context.getString(R.string.today)
-                yesterday -> holder.textViewPlanText.text = holder.itemView.context.getString(R.string.yesterday)
-                tomorrow -> holder.textViewPlanText.text = holder.itemView.context.getString(R.string.tomorrow)
+                currentDate -> holder.textViewPlanText.text =
+                    holder.itemView.context.getString(R.string.today)
+
+                yesterday -> holder.textViewPlanText.text =
+                    holder.itemView.context.getString(R.string.yesterday)
+
+                tomorrow -> holder.textViewPlanText.text =
+                    holder.itemView.context.getString(R.string.tomorrow)
+
                 else -> {
                     val inputFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
                     val outputFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")

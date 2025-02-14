@@ -5,10 +5,12 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.andef.myplans.data.datasource.PlanDbModel
+import com.andef.myplans.di.ApplicationScope
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
 import io.reactivex.Completable
 
+@ApplicationScope
 @Dao
 interface PlanDao {
     @Insert

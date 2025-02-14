@@ -3,7 +3,6 @@ package com.andef.myplans.presentation.ui.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.animation.Animation
 import android.widget.Button
@@ -11,60 +10,49 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.andef.myplans.R
+import com.andef.myplans.databinding.ActivityChangePlanBinding
+import com.andef.myplans.di.DaggerMyPlansComponent
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
+import com.andef.myplans.presentation.app.MyPlansApplication
+import com.andef.myplans.presentation.factory.ViewModelFactory
 import com.andef.myplans.presentation.ui.viewmodel.ChangePlanViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import javax.inject.Inject
 
 class ChangePlanActivity : AppCompatActivity() {
-    private lateinit var main: ConstraintLayout
+    private val binding by lazy {
+        ActivityChangePlanBinding.inflate(layoutInflater)
+    }
 
-    private lateinit var editTextPlanTitle: EditText
+    private val component by lazy {
+        (application as MyPlansApplication).component
+    }
 
-    private lateinit var textViewLastDate: TextView
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[ChangePlanViewModel::class.java]
+    }
 
-    private lateinit var radioButtonLow: RadioButton
-    private lateinit var radioButtonMedium: RadioButton
-    private lateinit var radioButtonHigh: RadioButton
-
-    private lateinit var floatingActionButtonCalendar: FloatingActionButton
-    private lateinit var floatingActionButtonHome: FloatingActionButton
-
-    private lateinit var buttonSave: Button
-
-    private lateinit var viewModel: ChangePlanViewModel
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
-        setContentView(R.layout.activity_change_plan)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[ChangePlanViewModel::class.java]
         initViews()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun initViews() {
-        main = findViewById(R.id.main)
+        binding.editTextPlanTitleInChange.setText(intent.getStringExtra(EXTRA_TITLE))
 
-        editTextPlanTitle = findViewById<EditText?>(R.id.editTextPlanTitleInChange).apply {
-            setText(intent.getStringExtra(EXTRA_TITLE))
-        }
-
-        textViewLastDate = findViewById<TextView?>(R.id.textViewLastDate).apply {
+        binding.textViewLastDate.apply {
             val stringBuilder = StringBuilder()
             stringBuilder.append(text.toString())
             stringBuilder.append(intent.getStringExtra(EXTRA_DATE))
@@ -72,34 +60,15 @@ class ChangePlanActivity : AppCompatActivity() {
             viewModel.lastDate(intent.getStringExtra(EXTRA_DATE).toString())
         }
 
-        radioButtonLow = findViewById(R.id.radioButtonLowInChange)
-        radioButtonMedium = findViewById(R.id.radioButtonMediumInChange)
-        radioButtonHigh = findViewById(R.id.radioButtonHighInChange)
-
         when (intent.getIntExtra(EXTRA_IMPORTANCE, 1)) {
-            3 -> radioButtonLow.isChecked = true
-            2 -> radioButtonMedium.isChecked = true
-            1 -> radioButtonHigh.isChecked = true
+            3 -> binding.radioButtonLowInChange.isChecked = true
+            2 -> binding.radioButtonMediumInChange.isChecked = true
+            1 -> binding.radioButtonHighInChange.isChecked = true
         }
 
-        floatingActionButtonCalendar =
-            findViewById<FloatingActionButton?>(R.id.floatingActionButtonCalendarInChange).apply {
-                setOnClickListener {
-                    openCalendar()
-                }
-            }
-        floatingActionButtonHome =
-            findViewById<FloatingActionButton?>(R.id.floatingActionButtonHomeInChange).apply {
-                setOnClickListener {
-                    mainScreen()
-                }
-            }
-
-        buttonSave = findViewById<Button?>(R.id.buttonSaveInChange).apply {
-            setOnClickListener {
-                changePlan()
-            }
-        }
+        binding.floatingActionButtonCalendarInChange.setOnClickListener { openCalendar() }
+        binding.floatingActionButtonHomeInChange.setOnClickListener { mainScreen() }
+        binding.buttonSaveInChange.setOnClickListener { changePlan() }
 
         if (intent.getBooleanExtra(EXTRA_IS_DARK_THEME, false)) {
             darkTheme()
@@ -117,15 +86,15 @@ class ChangePlanActivity : AppCompatActivity() {
                 finish()
             }
         })
-        floatingActionButtonHome.startAnimation(animation)
+        binding.floatingActionButtonHomeInChange.startAnimation(animation)
     }
 
     private fun getImportance(): Importance? {
-        return if (radioButtonLow.isChecked) {
+        return if (binding.radioButtonLowInChange.isChecked) {
             Importance.LOW
-        } else if (radioButtonMedium.isChecked) {
+        } else if (binding.radioButtonMediumInChange.isChecked) {
             Importance.MEDIUM
-        } else if (radioButtonHigh.isChecked) {
+        } else if (binding.radioButtonHighInChange.isChecked) {
             Importance.HIGH
         } else {
             null
@@ -134,30 +103,29 @@ class ChangePlanActivity : AppCompatActivity() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun darkTheme() {
-        main.background = getDrawable(R.drawable.app_background_black)
+        binding.main.background = getDrawable(R.drawable.app_background_black)
 
-        editTextPlanTitle.background = getDrawable(R.drawable.frame_black)
-        editTextPlanTitle.setTextColor(getColor(R.color.white))
-        editTextPlanTitle.setHintTextColor(getColor(R.color.white))
-        editTextPlanTitle.alpha = 0.8f
+        binding.editTextPlanTitleInChange.background = getDrawable(R.drawable.frame_black)
+        binding.editTextPlanTitleInChange.setTextColor(getColor(R.color.white))
+        binding.editTextPlanTitleInChange.setHintTextColor(getColor(R.color.white))
+        binding.editTextPlanTitleInChange.alpha = 0.8f
 
-        floatingActionButtonCalendar.alpha = 0.7f
-        floatingActionButtonHome.alpha = 0.7f
+        binding.floatingActionButtonCalendarInChange.alpha = 0.7f
+        binding.floatingActionButtonHomeInChange.alpha = 0.7f
 
-        textViewLastDate.setTextColor(getColor(R.color.white_text_black))
+        binding.textViewLastDate.setTextColor(getColor(R.color.white_text_black))
 
-        radioButtonLow.background = getDrawable(R.drawable.green_black_background_for_importance)
-        radioButtonMedium.background =
+        binding.radioButtonLowInChange.background = getDrawable(R.drawable.green_black_background_for_importance)
+        binding.radioButtonMediumInChange.background =
             getDrawable(R.drawable.orange_black_background_for_importance)
-        radioButtonHigh.background = getDrawable(R.drawable.red_black_background_for_importance)
-        radioButtonLow.alpha = 0.7f
-        radioButtonMedium.alpha = 0.7f
-        radioButtonHigh.alpha = 0.7f
+        binding.radioButtonHighInChange.background = getDrawable(R.drawable.red_black_background_for_importance)
+        binding.radioButtonLowInChange.alpha = 0.7f
+        binding.radioButtonMediumInChange.alpha = 0.7f
+        binding.radioButtonHighInChange.alpha = 0.7f
 
-        buttonSave.alpha = 0.7f
+        binding.buttonSaveInChange.alpha = 0.7f
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun changePlan() {
         val animation =
             android.view.animation.AnimationUtils.loadAnimation(this, R.anim.touch_save_button)
@@ -166,7 +134,7 @@ class ChangePlanActivity : AppCompatActivity() {
             override fun onAnimationRepeat(animation: Animation?) {}
 
             override fun onAnimationEnd(animation: Animation?) {
-                val title = editTextPlanTitle.text.toString().trim()
+                val title = binding.editTextPlanTitleInChange.text.toString().trim()
                 val importance = getImportance()
                 if (title.isEmpty()) {
                     getToast(getString(R.string.fill_in_the_text))
@@ -181,7 +149,7 @@ class ChangePlanActivity : AppCompatActivity() {
                 finish()
             }
         })
-        buttonSave.startAnimation(animation)
+        binding.buttonSaveInChange.startAnimation(animation)
     }
 
     private fun getToast(stringOfToast: String) {
@@ -203,7 +171,7 @@ class ChangePlanActivity : AppCompatActivity() {
                 openCalendarPicker()
             }
         })
-        floatingActionButtonCalendar.startAnimation(animation)
+        binding.floatingActionButtonCalendarInChange.startAnimation(animation)
     }
 
     private fun openCalendarPicker() {
@@ -214,7 +182,6 @@ class ChangePlanActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun getDate(): String {
         return viewModel.date
     }

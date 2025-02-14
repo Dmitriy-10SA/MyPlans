@@ -1,19 +1,18 @@
 package com.andef.myplans.domain.usecases
 
-import android.app.Application
-import com.andef.myplans.data.repository.PlanRepositoryImpl
 import com.andef.myplans.domain.entities.Importance
+import com.andef.myplans.domain.repository.PlanRepository
 import io.reactivex.Completable
+import javax.inject.Inject
 
-object ChangePlanById {
+class ChangePlanByIdUseCase @Inject constructor(private val repository: PlanRepository) {
     fun execute(
-        application: Application,
         id: Int,
         title: String,
         date: String,
         importance: Importance
     ): Completable {
-        return PlanRepositoryImpl.getInstance(application).changePlanById(
+        return repository.changePlanById(
             id,
             title,
             date,
