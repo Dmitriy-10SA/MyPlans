@@ -52,10 +52,10 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
     }
-    @Inject
-    lateinit var plansInPlanAdapter: PlanAdapter
-    @Inject
-    lateinit var plansInCalenderAdapter: PlanAdapter
+
+    private lateinit var plansInPlanAdapter: PlanAdapter
+
+    private lateinit var plansInCalenderAdapter: PlanAdapter
 
     private lateinit var itemTouchHelperForPlanInPlans: ItemTouchHelper
     private lateinit var itemTouchHelperForPlanInCalendar: ItemTouchHelper
@@ -208,8 +208,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-//        plansInPlanAdapter = PlanAdapter()
-//        plansInCalenderAdapter = PlanAdapter()
+        plansInPlanAdapter = PlanAdapter()
+        plansInCalenderAdapter = PlanAdapter()
         binding.recyclerViewPlansInPlans.adapter = plansInPlanAdapter
         binding.recyclerViewPlansInCalendar.adapter = plansInCalenderAdapter
 
