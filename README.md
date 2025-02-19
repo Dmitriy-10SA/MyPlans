@@ -12,7 +12,6 @@
 - RxJava 2
 - Dagger 2
 - Room Database
-- SharedPreferences
 
 ---
 
