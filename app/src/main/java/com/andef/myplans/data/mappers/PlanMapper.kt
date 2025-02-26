@@ -9,7 +9,7 @@ class PlanMapper @Inject constructor() {
         return PlanDbModel(plan.id, plan.title, plan.date, plan.importance)
     }
 
-    private fun mapDbModelToPlan(planDbModel: PlanDbModel): Plan {
+    fun mapDbModelToPlan(planDbModel: PlanDbModel): Plan {
         return Plan(planDbModel.id, planDbModel.title, planDbModel.date, planDbModel.importance)
     }
 

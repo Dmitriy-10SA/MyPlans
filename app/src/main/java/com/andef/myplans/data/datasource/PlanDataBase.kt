@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.andef.myplans.data.dao.PlanDao
 import com.andef.myplans.di.ApplicationScope
-import com.andef.myplans.domain.entities.Plan
 
 @ApplicationScope
 @Database(entities = [PlanDbModel::class], version = 1, exportSchema = false)

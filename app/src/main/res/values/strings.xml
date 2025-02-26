@@ -21,4 +21,8 @@
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
     <string name="yesterday">Вчера</string>
+    <string name="add_plan">Добавить план</string>
+    <string name="error">Ошибка!</string>
+    <string name="input">Заполните поля!!</string>
+    <string name="date_chose">Выбрать дату</string>
 </resources>
