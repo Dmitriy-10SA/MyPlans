@@ -9,9 +9,9 @@
 - Kotlin  
 - MVVM  
 - Clean Architecture
-- RxJava 2
 - Dagger 2
 - Room Database
+- Coroutines + Flow
 
 ---
 
