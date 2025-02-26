@@ -5,14 +5,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginStart="8dp"
-    android:layout_marginTop="6dp"
+    android:layout_marginTop="10dp"
     android:layout_marginEnd="8dp"
-    android:layout_marginBottom="6dp">
+    android:layout_marginBottom="3dp">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textViewPlanText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="4dp"
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="19sp"

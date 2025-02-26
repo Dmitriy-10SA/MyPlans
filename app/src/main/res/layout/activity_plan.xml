@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@drawable/app_background_white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.activity.ChangePlanActivity">
+    android:background="#EBEBE9"
+    tools:context=".presentation.ui.activity.PlanActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -19,23 +19,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/editTextPlanTitleInChange"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="12dp"
-            android:autofillHints="no"
-            android:background="@drawable/frame"
-            android:hint="@string/input_your_plan"
-            android:inputType="text"
-            android:padding="10dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:textColor="@color/black"
+            android:layout_marginBottom="10dp"
             android:textColorHint="@color/black"
-            android:textSize="24sp" />
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="@color/black"
+            app:counterTextColor="@color/black"
+            app:cursorColor="@color/black"
+            app:helperTextTextColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeholderTextColor="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="no"
+                android:hint="@string/input_your_plan"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -44,8 +56,8 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/radioButtonLowInChange"
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioButtonLow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
@@ -58,8 +70,8 @@
                 app:buttonTint="@color/black"
                 app:tint="@color/black" />
 
-            <RadioButton
-                android:id="@+id/radioButtonMediumInChange"
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioButtonMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -73,8 +85,8 @@
                 app:buttonTint="@color/black"
                 app:tint="@color/black" />
 
-            <RadioButton
-                android:id="@+id/radioButtonHighInChange"
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioButtonHigh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -88,22 +100,53 @@
                 app:tint="@color/black" />
         </RadioGroup>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButtonCalendarInChange"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardViewDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="@color/white"
-            android:contentDescription="@string/calendar"
-            app:srcCompat="@drawable/calendar"
-            app:tint="@color/black" />
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="10dp"
+            app:cardUseCompatPadding="true">
 
-        <Button
-            android:id="@+id/buttonSaveInChange"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/date_chose"
+                    android:maxWidth="35dp"
+                    android:src="@drawable/calendar_lines_svgrepo_com" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_chose"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:alpha="0.5"
             android:backgroundTint="#1565C0"
+            android:enabled="false"
             android:padding="8dp"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
@@ -112,31 +155,17 @@
             android:textSize="24sp"
             app:cornerRadius="10dp" />
 
-        <TextView
-            android:id="@+id/textViewLastDate"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textViewHintDeleteChange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/last_date"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="@string/del_plan"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
     </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButtonHomeInChange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/back_button"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:backgroundTint="@color/white"
-        app:tint="@color/black"
-        app:buttonTint="@color/black"
-        android:contentDescription="@string/main_screen"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

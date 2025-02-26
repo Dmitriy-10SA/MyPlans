@@ -1,30 +1,28 @@
 package com.andef.myplans.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.andef.myplans.data.datasource.PlanDbModel
 import com.andef.myplans.di.ApplicationScope
 import com.andef.myplans.domain.entities.Importance
-import com.andef.myplans.domain.entities.Plan
-import io.reactivex.Completable
+import kotlinx.coroutines.flow.Flow
 
 @ApplicationScope
 @Dao
 interface PlanDao {
     @Insert
-    fun add(plan: PlanDbModel): Completable
+    suspend fun add(plan: PlanDbModel)
 
     @Query("DELETE FROM `plans` WHERE id = :id")
-    fun remove(id: Int): Completable
+    suspend fun remove(id: Int)
 
     @Query("SELECT * FROM plans")
-    fun getPlans(): LiveData<List<PlanDbModel>>
+    fun getPlans(): Flow<List<PlanDbModel>>
 
     @Query("SELECT * FROM plans WHERE date = :date")
-    fun getPlansByDate(date: String): LiveData<List<PlanDbModel>>
+    fun getPlansByDate(date: String): Flow<List<PlanDbModel>>
 
     @Query("UPDATE plans SET title = :title, date = :date, importance = :importance WHERE id = :id")
-    fun changePlanById(id: Int, title: String, date: String, importance: Importance): Completable
+    suspend fun changePlanById(id: Int, title: String, date: String, importance: Importance)
 }

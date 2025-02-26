@@ -1,9 +1,9 @@
 package com.andef.myplans.di
 
 import androidx.lifecycle.ViewModel
-import com.andef.myplans.presentation.ui.viewmodel.AddPlanViewModel
-import com.andef.myplans.presentation.ui.viewmodel.ChangePlanViewModel
-import com.andef.myplans.presentation.ui.viewmodel.MainViewModel
+import com.andef.myplans.presentation.ui.viewmodel.CalendarFragmentViewModel
+import com.andef.myplans.presentation.ui.viewmodel.PlanViewModel
+import com.andef.myplans.presentation.ui.viewmodel.PlansFragmentViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -11,17 +11,17 @@ import dagger.multibindings.IntoMap
 @Module
 interface ViewModelModule {
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
+    @ViewModelKey(PlansFragmentViewModel::class)
     @Binds
-    fun bindMainViewModel(impl: MainViewModel): ViewModel
+    fun bindPlanFragmentViewModel(impl: PlansFragmentViewModel): ViewModel
 
     @IntoMap
-    @ViewModelKey(AddPlanViewModel::class)
+    @ViewModelKey(PlanViewModel::class)
     @Binds
-    fun bindAddPlanViewModel(impl: AddPlanViewModel): ViewModel
+    fun bindPlanViewModel(impl: PlanViewModel): ViewModel
 
     @IntoMap
-    @ViewModelKey(ChangePlanViewModel::class)
+    @ViewModelKey(CalendarFragmentViewModel::class)
     @Binds
-    fun bindChangePlanViewModel(impl: ChangePlanViewModel): ViewModel
+    fun bindCalendarFragmentViewModel(impl: CalendarFragmentViewModel): ViewModel
 }

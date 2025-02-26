@@ -1,14 +1,13 @@
 package com.andef.myplans.domain.repository
 
-import androidx.lifecycle.LiveData
 import com.andef.myplans.domain.entities.Importance
 import com.andef.myplans.domain.entities.Plan
-import io.reactivex.Completable
+import kotlinx.coroutines.flow.Flow
 
 interface PlanRepository {
-    fun add(plan: Plan): Completable
-    fun remove(id: Int): Completable
-    fun getPlans(): LiveData<List<Plan>>
-    fun getPlansByDate(date: String): LiveData<List<Plan>>
-    fun changePlanById(id: Int, title: String, date: String, importance: Importance): Completable
+    suspend fun add(plan: Plan)
+    suspend fun remove(id: Int)
+    fun getPlans(): Flow<List<Plan>>
+    fun getPlansByDate(date: String): Flow<List<Plan>>
+    suspend fun changePlanById(id: Int, title: String, date: String, importance: Importance)
 }

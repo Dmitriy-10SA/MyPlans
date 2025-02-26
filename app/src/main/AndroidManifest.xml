@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.andef.myplans"
-    android:versionName="5.0"
-    android:versionCode="5">
+    android:versionName="6.0"
+    android:versionCode="6">
 
     <application
         android:allowBackup="true"
@@ -17,17 +17,11 @@
         android:theme="@style/Theme.MyPlans"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.ui.activity.ChangePlanActivity"
+            android:name=".presentation.ui.activity.PlanActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
-        <activity
-            android:name=".presentation.ui.activity.AddPlanActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity"/>
         <activity
             android:name=".presentation.ui.activity.MainActivity"
             android:exported="true"
